@@ -1,0 +1,41 @@
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+model users {
+  id       Int     @id @default(autoincrement())
+  name     String  @db.VarChar(45)
+  email    String  @db.VarChar(255)
+  password String  @db.VarChar(32)
+  questions questions[]
+}
+
+model categories {
+  id       Int    @id @default(autoincrement())
+  category String @db.VarChar(45)
+  questions questions[]
+}
+
+model questions {
+  id            Int        @id    @default(autoincrement())
+  question      String     @db.VarChar(100)
+  creation_date DateTime   @db.Timestamp(0) @default(now())
+  user_id       Int
+  category_id   Int
+  users          users       @relation(fields: [user_id], references: [id])
+  categories    categories @relation(fields: [category_id], references: [id])
+  answers       answers[]
+}
+
+model answers {
+  id            Int        @id @default(autoincrement())
+  response      String     @db.VarChar(300)
+  response_date DateTime   @db.Timestamp(0) @default(now())
+  question_id   Int
+  questions questions      @relation(fields: [question_id], references: [id])
+}
