@@ -10,8 +10,8 @@ generator client {
 model users {
   id       Int     @id @default(autoincrement())
   name     String  @db.VarChar(45)
-  email    String  @db.VarChar(255)
-  password String  @db.VarChar(32)
+  email    String  @unique @db.VarChar(255)
+  password String  @db.VarChar(60)
   questions questions[]
 }
 

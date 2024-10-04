@@ -14,6 +14,7 @@ import { User } from './interfaces/user.interface';
 import { UpdateUserDto } from './dto/update-user.dto';
 import { ApiTags, ApiOperation, ApiResponse } from '@nestjs/swagger';
 import { CommonApiResponses } from 'src/common-api-responses.decorator';
+import { LoginDto } from './dto/login.dto';
 
 @ApiTags('users')
 @Controller('users')
@@ -50,5 +51,13 @@ export class UsersController {
   @CommonApiResponses()
   async deleteUser(@Param('id', ParseIntPipe) id: number) {
     return await this.usersService.deleteUser(id);
+  }
+
+  @Post('login/')
+  async login(@Body() loginDto: LoginDto): Promise<User | null> {
+    return await this.usersService.validateUser(
+      loginDto.email,
+      loginDto.password,
+    );
   }
 }
