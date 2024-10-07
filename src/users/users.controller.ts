@@ -7,6 +7,7 @@ import {
   ParseIntPipe,
   Patch,
   Post,
+  UseGuards,
 } from '@nestjs/common';
 import { CreateUserDto } from './dto/create-user.dto';
 import { UsersService } from './users.service';
@@ -14,10 +15,11 @@ import { User } from './interfaces/user.interface';
 import { UpdateUserDto } from './dto/update-user.dto';
 import { ApiTags, ApiOperation, ApiResponse } from '@nestjs/swagger';
 import { CommonApiResponses } from 'src/common-api-responses.decorator';
-import { LoginDto } from './dto/login.dto';
+import { AuthGuard } from '@nestjs/passport';
 
 @ApiTags('users')
 @Controller('users')
+@UseGuards(AuthGuard('jwt'))
 export class UsersController {
   constructor(private readonly usersService: UsersService) {}
 
@@ -51,13 +53,5 @@ export class UsersController {
   @CommonApiResponses()
   async deleteUser(@Param('id', ParseIntPipe) id: number) {
     return await this.usersService.deleteUser(id);
-  }
-
-  @Post('login/')
-  async login(@Body() loginDto: LoginDto): Promise<User | null> {
-    return await this.usersService.validateUser(
-      loginDto.email,
-      loginDto.password,
-    );
   }
 }

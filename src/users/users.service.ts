@@ -1,4 +1,9 @@
-import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
+import {
+  HttpException,
+  HttpStatus,
+  Injectable,
+  UnauthorizedException,
+} from '@nestjs/common';
 import { PrismaService } from 'src/database/prisma.service';
 import { User } from './interfaces/user.interface';
 import { CreateUserDto } from './dto/create-user.dto';
@@ -68,15 +73,16 @@ export class UsersService {
     return { message: 'Usuário deletado com sucesso' };
   }
 
-  async validateUser(email: string, password: string): Promise<User | null> {
-    const user = await this.prisma.users.findUnique({
+  async findOne(email: string) {
+    const existingUser = await this.prisma.users.findUnique({
       where: { email },
     });
-
-    if (user && (await bcrypt.compare(password, user.password))) {
-      return user;
+    if (!existingUser) {
+      throw new UnauthorizedException('Email e/ou senha inválidos.');
     }
 
-    throw new HttpException('Credenciais inválidas.', HttpStatus.UNAUTHORIZED);
+    return await this.prisma.users.findUnique({
+      where: { email },
+    });
   }
 }

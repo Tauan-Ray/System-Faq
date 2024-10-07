@@ -7,6 +7,7 @@ import {
   ParseIntPipe,
   Param,
   Get,
+  UseGuards,
 } from '@nestjs/common';
 import { Response } from './interface/response.interface';
 import { CreateResponseDto } from './dto/create-response.dto';
@@ -14,9 +15,11 @@ import { UpdateResponseDto } from './dto/update-response.dto';
 import { AnswersService } from './answers.service';
 import { ApiTags, ApiOperation, ApiResponse } from '@nestjs/swagger';
 import { CommonApiResponses } from 'src/common-api-responses.decorator';
+import { AuthGuard } from '@nestjs/passport';
 
 @ApiTags('answers')
 @Controller('answers')
+@UseGuards(AuthGuard('jwt'))
 export class AnswersController {
   constructor(private readonly answersServices: AnswersService) {}
 

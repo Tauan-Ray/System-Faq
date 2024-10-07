@@ -7,6 +7,7 @@ import {
   ParseIntPipe,
   Patch,
   Post,
+  UseGuards,
 } from '@nestjs/common';
 import { Question } from './interface/question.interface';
 import { CreateQuestionDto } from './dto/create-question.dto';
@@ -14,9 +15,11 @@ import { UpdateQuestionDto } from './dto/update-question.dto';
 import { QuestionsService } from './questions.service';
 import { ApiTags, ApiOperation, ApiResponse } from '@nestjs/swagger';
 import { CommonApiResponses } from 'src/common-api-responses.decorator';
+import { AuthGuard } from '@nestjs/passport';
 
 @ApiTags('questions')
 @Controller('questions')
+@UseGuards(AuthGuard('jwt'))
 export class QuestionsController {
   constructor(private readonly questionsServices: QuestionsService) {}
 

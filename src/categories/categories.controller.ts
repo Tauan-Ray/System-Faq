@@ -7,15 +7,17 @@ import {
   ParseIntPipe,
   Patch,
   Post,
+  UseGuards,
 } from '@nestjs/common';
 import { Category } from './interface/category.interface';
 import { CreateUpdateCategoryDto } from './dto/create-update-categories.dto';
 import { CategoriesService } from './categories.service';
 import { ApiTags, ApiOperation, ApiResponse } from '@nestjs/swagger';
 import { CommonApiResponses } from 'src/common-api-responses.decorator';
-
+import { AuthGuard } from '@nestjs/passport';
 @ApiTags('categories')
 @Controller('categories')
+@UseGuards(AuthGuard('jwt'))
 export class CategoriesController {
   constructor(private readonly categoriesServices: CategoriesService) {}
 
