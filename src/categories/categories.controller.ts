@@ -15,9 +15,10 @@ import { CategoriesService } from './categories.service';
 import { ApiTags, ApiOperation, ApiResponse } from '@nestjs/swagger';
 import { CommonApiResponses } from 'src/common-api-responses.decorator';
 import { AuthGuard } from '@nestjs/passport';
+import { RolesGuard } from './guards/roles.guard';
 @ApiTags('categories')
 @Controller('categories')
-@UseGuards(AuthGuard('jwt'))
+@UseGuards(AuthGuard('jwt'), RolesGuard)
 export class CategoriesController {
   constructor(private readonly categoriesServices: CategoriesService) {}
 

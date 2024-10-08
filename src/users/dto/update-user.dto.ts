@@ -1,5 +1,6 @@
-import { IsString, IsEmail, IsOptional, Length } from 'class-validator';
+import { IsString, IsEmail, IsOptional, Length, IsEnum } from 'class-validator';
 import { ApiPropertyOptional } from '@nestjs/swagger';
+import { Roles } from '@prisma/client';
 
 export class UpdateUserDto {
   @IsOptional()
@@ -26,4 +27,8 @@ export class UpdateUserDto {
     description: 'Senha do usuário',
   })
   password: string;
+
+  @IsOptional()
+  @IsEnum(Roles, { message: 'O cargo deve ser ADMIN ou USER.' })
+  role: Roles;
 }

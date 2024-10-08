@@ -9,6 +9,7 @@ import { User } from './interfaces/user.interface';
 import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
 import * as bcrypt from 'bcrypt';
+import { Roles } from '@prisma/client';
 
 @Injectable()
 export class UsersService {
@@ -20,6 +21,7 @@ export class UsersService {
         id: true,
         name: true,
         email: true,
+        role: true,
       },
     });
   }
@@ -31,6 +33,7 @@ export class UsersService {
         name: createUserDto.name,
         email: createUserDto.email,
         password: hashedPassword,
+        role: createUserDto.role || Roles.USER,
       },
     });
   }
@@ -44,6 +47,7 @@ export class UsersService {
     }
 
     let password = updateUserDto.password;
+    const role = updateUserDto.role;
 
     if (password) {
       password = await bcrypt.hash(password, 10);
@@ -55,6 +59,7 @@ export class UsersService {
         name: updateUserDto.name,
         email: updateUserDto.email,
         password: password || existingUser.password,
+        role: role ?? existingUser.role,
       },
     });
   }
