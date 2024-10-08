@@ -8,6 +8,7 @@ import {
   Param,
   Get,
   UseGuards,
+  Request,
 } from '@nestjs/common';
 import { Response } from './interface/response.interface';
 import { CreateResponseDto } from './dto/create-response.dto';
@@ -46,14 +47,19 @@ export class AnswersController {
   async updateCategory(
     @Param('id', ParseIntPipe) id: number,
     @Body() updateResponseDto: UpdateResponseDto,
+    @Request() req,
   ): Promise<Response> {
-    return await this.answersServices.updateResponse(id, updateResponseDto);
+    return await this.answersServices.updateResponse(
+      id,
+      updateResponseDto,
+      req.user.id,
+    );
   }
 
   @Delete('delete-response/:id')
   @ApiOperation({ summary: 'Apaga uma resposta existente no banco de dados.' })
   @CommonApiResponses()
-  async deleteResponse(@Param('id', ParseIntPipe) id: number) {
-    return await this.answersServices.deleteResponse(id);
+  async deleteResponse(@Param('id', ParseIntPipe) id: number, @Request() req) {
+    return await this.answersServices.deleteResponse(id, req.user.id);
   }
 }

@@ -7,6 +7,7 @@ import {
   ParseIntPipe,
   Patch,
   Post,
+  Request,
   UseGuards,
 } from '@nestjs/common';
 import { Question } from './interface/question.interface';
@@ -45,15 +46,20 @@ export class QuestionsController {
   @CommonApiResponses()
   async updateCategory(
     @Param('id', ParseIntPipe) id: number,
+    @Request() req,
     @Body() updateQuestionDto: UpdateQuestionDto,
   ): Promise<Question> {
-    return await this.questionsServices.updateQuestion(id, updateQuestionDto);
+    return await this.questionsServices.updateQuestion(
+      id,
+      updateQuestionDto,
+      req.user.id,
+    );
   }
 
   @Delete('delete-question/:id')
   @ApiOperation({ summary: 'Apaga uma pergunta existente no banco de dados.' })
   @CommonApiResponses()
-  async deleteQuestion(@Param('id', ParseIntPipe) id: number) {
-    return await this.questionsServices.deleteQuestion(id);
+  async deleteQuestion(@Param('id', ParseIntPipe) id: number, @Request() req) {
+    return await this.questionsServices.deleteQuestion(id, req.user.id);
   }
 }

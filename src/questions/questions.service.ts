@@ -42,6 +42,7 @@ export class QuestionsService {
   async updateQuestion(
     id: number,
     updateQuestionDto: UpdateQuestionDto,
+    user_id_request: number,
   ): Promise<Question> {
     try {
       const existingQuestion = await this.prisma.questions.findUnique({
@@ -53,6 +54,14 @@ export class QuestionsService {
           HttpStatus.NOT_FOUND,
         );
       }
+
+      if (existingQuestion.user_id !== user_id_request) {
+        throw new HttpException(
+          'Pergunta pertence a outro usuário.',
+          HttpStatus.UNAUTHORIZED,
+        );
+      }
+
       const updateQuestion = await this.prisma.questions.update({
         where: { id },
         data: {
@@ -63,12 +72,17 @@ export class QuestionsService {
 
       return updateQuestion;
     } catch (error) {
+      if (error instanceof HttpException) {
+        throw error;
+      }
+
       if (error.code === 'P2003') {
         throw new HttpException(
           'Categoria não encontrada',
           HttpStatus.BAD_REQUEST,
         );
       }
+
       throw new HttpException(
         'Erro ao atualizar a pergunta.',
         HttpStatus.INTERNAL_SERVER_ERROR,
@@ -76,10 +90,48 @@ export class QuestionsService {
     }
   }
 
-  async deleteQuestion(id: number): Promise<{ message: string }> {
-    await this.prisma.questions.delete({
-      where: { id },
-    });
-    return { message: 'Pergunta deletada com sucesso.' };
+  async deleteQuestion(
+    id: number,
+    user_id_request: number,
+  ): Promise<{ message: string }> {
+    try {
+      const existingQuestion = await this.prisma.questions.findUnique({
+        where: { id },
+      });
+      if (!existingQuestion) {
+        throw new HttpException(
+          'Pergunta não encontrada.',
+          HttpStatus.NOT_FOUND,
+        );
+      }
+
+      if (existingQuestion.user_id !== user_id_request) {
+        throw new HttpException(
+          'Pergunta pertence a outro usuário.',
+          HttpStatus.UNAUTHORIZED,
+        );
+      }
+
+      await this.prisma.questions.delete({
+        where: { id },
+      });
+      return { message: 'Pergunta deletada com sucesso.' };
+    } catch (error) {
+      if (error instanceof HttpException) {
+        throw error;
+      }
+
+      if (error.code === 'P2003') {
+        throw new HttpException(
+          'Categoria não encontrada',
+          HttpStatus.BAD_REQUEST,
+        );
+      }
+
+      throw new HttpException(
+        'Erro ao atualizar a pergunta.',
+        HttpStatus.INTERNAL_SERVER_ERROR,
+      );
+    }
   }
 }

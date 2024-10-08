@@ -7,6 +7,7 @@ import {
   ParseIntPipe,
   Patch,
   Post,
+  Request,
   UseGuards,
 } from '@nestjs/common';
 import { CreateUserDto } from './dto/create-user.dto';
@@ -44,14 +45,15 @@ export class UsersController {
   async updateUser(
     @Param('id', ParseIntPipe) id: number,
     @Body() UpdateUserDto: UpdateUserDto,
+    @Request() req,
   ): Promise<User> {
-    return await this.usersService.updateUser(id, UpdateUserDto);
+    return await this.usersService.updateUser(id, UpdateUserDto, req.user.id);
   }
 
   @Delete('delete-user/:id')
   @ApiOperation({ summary: 'Apaga um usuário existente no banco de dados.' })
   @CommonApiResponses()
-  async deleteUser(@Param('id', ParseIntPipe) id: number) {
-    return await this.usersService.deleteUser(id);
+  async deleteUser(@Param('id', ParseIntPipe) id: number, @Request() req) {
+    return await this.usersService.deleteUser(id, req.user.id);
   }
 }

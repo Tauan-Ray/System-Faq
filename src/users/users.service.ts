@@ -38,12 +38,23 @@ export class UsersService {
     });
   }
 
-  async updateUser(id: number, updateUserDto: UpdateUserDto): Promise<User> {
+  async updateUser(
+    id: number,
+    updateUserDto: UpdateUserDto,
+    user_id_request: number,
+  ): Promise<User> {
     const existingUser = await this.prisma.users.findUnique({
       where: { id },
     });
     if (!existingUser) {
       throw new HttpException('Usuário não encontrado.', HttpStatus.NOT_FOUND);
+    }
+
+    if (existingUser.id !== user_id_request) {
+      throw new HttpException(
+        'Você não é esse usuário.',
+        HttpStatus.UNAUTHORIZED,
+      );
     }
 
     let password = updateUserDto.password;
@@ -64,12 +75,23 @@ export class UsersService {
     });
   }
 
-  async deleteUser(id: number): Promise<{ message: string }> {
+  async deleteUser(
+    id: number,
+    user_id_request: number,
+  ): Promise<{ message: string }> {
     const existingUser = await this.prisma.users.findUnique({
       where: { id },
     });
+
     if (!existingUser) {
       throw new HttpException('Usuário não encontrado.', HttpStatus.NOT_FOUND);
+    }
+
+    if (existingUser.id !== user_id_request) {
+      throw new HttpException(
+        'Você não é esse usuário.',
+        HttpStatus.UNAUTHORIZED,
+      );
     }
 
     await this.prisma.users.delete({
