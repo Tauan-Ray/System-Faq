@@ -37,8 +37,12 @@ export class AnswersController {
   @CommonApiResponses()
   async createCategory(
     @Body() createResponseDto: CreateResponseDto,
+    @Request() req,
   ): Promise<Response> {
-    return await this.answersServices.createResponse(createResponseDto);
+    return await this.answersServices.createResponse(
+      createResponseDto,
+      req.user.id,
+    );
   }
 
   @Patch('update-response/:id')

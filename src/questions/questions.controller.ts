@@ -37,8 +37,12 @@ export class QuestionsController {
   @CommonApiResponses()
   async createCategory(
     @Body() createQuestionDto: CreateQuestionDto,
+    @Request() req,
   ): Promise<Question> {
-    return await this.questionsServices.createQuestion(createQuestionDto);
+    return await this.questionsServices.createQuestion(
+      createQuestionDto,
+      req.user.id,
+    );
   }
 
   @Patch('update-question/:id')

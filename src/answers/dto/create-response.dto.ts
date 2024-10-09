@@ -18,12 +18,4 @@ export class CreateResponseDto {
     description: 'ID da pergunta que está sendo respondida.',
   })
   question_id: number;
-
-  @IsNumber()
-  @IsNotEmpty({ message: 'O id de usuário não pode ser um campo vazio.' })
-  @ApiProperty({
-    example: 1,
-    description: 'ID do usuário que esta respondendo.',
-  })
-  user_id: number;
 }

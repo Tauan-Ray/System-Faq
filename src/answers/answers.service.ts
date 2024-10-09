@@ -14,13 +14,14 @@ export class AnswersService {
 
   async createResponse(
     createResponseDto: CreateResponseDto,
+    user_id_request: number,
   ): Promise<Response> {
     try {
       const newResponse = await this.prisma.answers.create({
         data: {
           response: createResponseDto.response,
           question_id: createResponseDto.question_id,
-          user_id: createResponseDto.user_id,
+          user_id: user_id_request,
         },
       });
       return newResponse;

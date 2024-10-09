@@ -14,12 +14,13 @@ export class QuestionsService {
 
   async createQuestion(
     createQuestionDto: CreateQuestionDto,
+    user_id_request: number,
   ): Promise<Question> {
     try {
       const newQuestion = await this.prisma.questions.create({
         data: {
           question: createQuestionDto.question,
-          user_id: createQuestionDto.user_id,
+          user_id: user_id_request,
           category_id: createQuestionDto.category_id,
         },
       });
