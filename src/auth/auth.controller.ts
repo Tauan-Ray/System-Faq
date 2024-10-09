@@ -1,19 +1,29 @@
-import { Controller, Post, UseGuards, Body, Req } from '@nestjs/common';
+import { Controller, Post, UseGuards, Body } from '@nestjs/common';
 import { AuthGuard } from '@nestjs/passport';
 import { AuthService } from './auth.service';
+import { RefreshTokenDto } from './dto/refresh.dto';
+import { ApiOperation, ApiTags } from '@nestjs/swagger';
+import { LoginDto } from './dto/login.dto';
+import { CommonApiResponses } from 'src/common-api-responses.decorator';
 
 @Controller('auth')
+@ApiTags('Auth')
 export class AuthController {
   constructor(private readonly authService: AuthService) {}
 
   @UseGuards(AuthGuard('local'))
   @Post('login/')
-  async loginAuth(@Req() req: any) {
-    return await this.authService.login(req.user);
+  @ApiOperation({ summary: 'Faz login no sistema com base no email e senha.' })
+  @CommonApiResponses()
+  async loginAuth(@Body() loginDto: LoginDto) {
+    return await this.authService.login(loginDto);
   }
 
   @Post('refresh')
-  async refresh(@Body('refresh_token') refreshToken: string) {
-    return this.authService.refreshToken(refreshToken);
+  @ApiOperation({ summary: 'Gera um novo token de refresh.' })
+  @CommonApiResponses()
+  async refresh(@Body() refreshTokenDto: RefreshTokenDto) {
+    const { refresh_token } = refreshTokenDto;
+    return this.authService.refreshToken(refresh_token);
   }
 }

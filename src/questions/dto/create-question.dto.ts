@@ -11,14 +11,6 @@ export class CreateQuestionDto {
   })
   question: string;
 
-  // @IsNumber()
-  // @IsNotEmpty({ message: 'O id de usuário não pode ser um campo vazio.' })
-  // @ApiProperty({
-  //   example: 1,
-  //   description: 'ID do usuário que fez a pergunta.',
-  // })
-  // user_id: number;
-
   @IsNumber()
   @IsNotEmpty({ message: 'O id de categoria não pode ser um campo vazio.' })
   @ApiProperty({
