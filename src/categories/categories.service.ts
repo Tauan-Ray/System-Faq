@@ -2,6 +2,7 @@ import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
 import { PrismaService } from 'src/database/prisma.service';
 import { Category } from './interface/category.interface';
 import { CreateUpdateCategoryDto } from './dto/create-update-categories.dto';
+import { throwNotFoundError } from 'src/utils/check.permissions';
 
 @Injectable()
 export class CategoriesService {
@@ -27,7 +28,7 @@ export class CategoriesService {
       where: { id },
     });
     if (!existingCategory) {
-      throw new HttpException('Usuário não encontrado.', HttpStatus.NOT_FOUND);
+      throwNotFoundError('Categoria');
     }
 
     return await this.prisma.categories.update({
@@ -42,10 +43,7 @@ export class CategoriesService {
         where: { id },
       });
       if (!existingCategory) {
-        throw new HttpException(
-          'Categoria não encontrada.',
-          HttpStatus.NOT_FOUND,
-        );
+        throwNotFoundError('Categoria');
       }
 
       await this.prisma.categories.delete({

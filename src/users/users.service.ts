@@ -10,6 +10,10 @@ import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
 import * as bcrypt from 'bcrypt';
 import { Roles } from '@prisma/client';
+import {
+  checkPermission,
+  throwNotFoundError,
+} from 'src/utils/check.permissions';
 
 @Injectable()
 export class UsersService {
@@ -59,7 +63,7 @@ export class UsersService {
     const existingUser = await this.prisma.users.findUnique({ where: { id } });
 
     if (!existingUser) {
-      throw new HttpException('Usuário não encontrado.', HttpStatus.NOT_FOUND);
+      throwNotFoundError('Usuário');
     }
 
     if (email) {
@@ -74,12 +78,7 @@ export class UsersService {
       }
     }
 
-    if (existingUser.id !== user_id_request) {
-      throw new HttpException(
-        'Você não tem permissão para modificar este usuário.',
-        HttpStatus.UNAUTHORIZED,
-      );
-    }
+    checkPermission(user_id_request, existingUser);
 
     let password = updateUserDto.password;
     const role = updateUserDto.role;
@@ -108,15 +107,10 @@ export class UsersService {
     });
 
     if (!existingUser) {
-      throw new HttpException('Usuário não encontrado.', HttpStatus.NOT_FOUND);
+      throwNotFoundError('Usuário');
     }
 
-    if (existingUser.id !== user_id_request) {
-      throw new HttpException(
-        'Você não é esse usuário.',
-        HttpStatus.UNAUTHORIZED,
-      );
-    }
+    checkPermission(user_id_request, existingUser);
 
     await this.prisma.users.delete({
       where: { id },

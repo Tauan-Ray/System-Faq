@@ -3,6 +3,10 @@ import { PrismaService } from 'src/database/prisma.service';
 import { Question } from './interface/question.interface';
 import { CreateQuestionDto } from './dto/create-question.dto';
 import { UpdateQuestionDto } from './dto/update-question.dto';
+import {
+  checkPermission,
+  throwNotFoundError,
+} from 'src/utils/check.permissions';
 
 @Injectable()
 export class QuestionsService {
@@ -50,18 +54,10 @@ export class QuestionsService {
         where: { id },
       });
       if (!existingQuestion) {
-        throw new HttpException(
-          'Pergunta não encontrada.',
-          HttpStatus.NOT_FOUND,
-        );
+        throwNotFoundError('Pergunta');
       }
 
-      if (existingQuestion.user_id !== user_id_request) {
-        throw new HttpException(
-          'Pergunta pertence a outro usuário.',
-          HttpStatus.UNAUTHORIZED,
-        );
-      }
+      checkPermission(user_id_request, existingQuestion);
 
       const updateQuestion = await this.prisma.questions.update({
         where: { id },
@@ -100,17 +96,11 @@ export class QuestionsService {
         where: { id },
       });
       if (!existingQuestion) {
-        throw new HttpException(
-          'Pergunta não encontrada.',
-          HttpStatus.NOT_FOUND,
-        );
+        throwNotFoundError('Pergunta');
       }
 
       if (existingQuestion.user_id !== user_id_request) {
-        throw new HttpException(
-          'Pergunta pertence a outro usuário.',
-          HttpStatus.UNAUTHORIZED,
-        );
+        checkPermission(user_id_request, existingQuestion);
       }
 
       await this.prisma.questions.delete({

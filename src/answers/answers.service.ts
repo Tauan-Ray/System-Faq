@@ -3,6 +3,10 @@ import { PrismaService } from 'src/database/prisma.service';
 import { Response } from './interface/response.interface';
 import { CreateResponseDto } from './dto/create-response.dto';
 import { UpdateResponseDto } from './dto/update-response.dto';
+import {
+  checkPermission,
+  throwNotFoundError,
+} from 'src/utils/check.permissions';
 
 @Injectable()
 export class AnswersService {
@@ -51,18 +55,10 @@ export class AnswersService {
       });
 
       if (!existingResponse) {
-        throw new HttpException(
-          'Resposta não encontrada.',
-          HttpStatus.NOT_FOUND,
-        );
+        throwNotFoundError('Resposta');
       }
 
-      if (existingResponse.user_id !== user_id_request) {
-        throw new HttpException(
-          'Resposta pertence a outro usuário.',
-          HttpStatus.UNAUTHORIZED,
-        );
-      }
+      checkPermission(user_id_request, existingResponse);
 
       const updateResponse = await this.prisma.answers.update({
         where: { id },
@@ -100,15 +96,10 @@ export class AnswersService {
     });
 
     if (!existingResponse) {
-      throw new HttpException('Resposta não encontrada.', HttpStatus.NOT_FOUND);
+      throwNotFoundError('Resposta');
     }
 
-    if (existingResponse.user_id !== user_id_request) {
-      throw new HttpException(
-        'Resposta pertence a outro usuário.',
-        HttpStatus.UNAUTHORIZED,
-      );
-    }
+    checkPermission(user_id_request, existingResponse);
 
     await this.prisma.answers.delete({
       where: { id },
