@@ -41,7 +41,7 @@ export class AnswersController {
   ): Promise<Response> {
     return await this.answersServices.createResponse(
       createResponseDto,
-      req.user.id,
+      req.user.sub,
     );
   }
 
@@ -56,7 +56,7 @@ export class AnswersController {
     return await this.answersServices.updateResponse(
       id,
       updateResponseDto,
-      req.user.id,
+      req.user.sub,
     );
   }
 
@@ -64,6 +64,6 @@ export class AnswersController {
   @ApiOperation({ summary: 'Apaga uma resposta existente no banco de dados.' })
   @CommonApiResponses()
   async deleteResponse(@Param('id', ParseIntPipe) id: number, @Request() req) {
-    return await this.answersServices.deleteResponse(id, req.user.id);
+    return await this.answersServices.deleteResponse(id, req.user.sub);
   }
 }

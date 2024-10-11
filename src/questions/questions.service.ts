@@ -124,7 +124,7 @@ export class QuestionsService {
 
       if (error.code === 'P2003') {
         throw new HttpException(
-          'Categoria não encontrada',
+          'Pergunta ainda possui respostas associadas.',
           HttpStatus.BAD_REQUEST,
         );
       }

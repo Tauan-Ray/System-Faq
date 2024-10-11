@@ -20,10 +20,10 @@ import { AuthGuard } from '@nestjs/passport';
 
 @ApiTags('users')
 @Controller('users')
-@UseGuards(AuthGuard('jwt'))
 export class UsersController {
   constructor(private readonly usersService: UsersService) {}
 
+  @UseGuards(AuthGuard('jwt'))
   @Get()
   @ApiOperation({ summary: 'Lista todos os usuários do banco de dados.' })
   @CommonApiResponses()
@@ -39,6 +39,7 @@ export class UsersController {
     return await this.usersService.createUser(CreateUserDto);
   }
 
+  @UseGuards(AuthGuard('jwt'))
   @Patch('update-user/:id')
   @ApiOperation({ summary: 'Atualiza um usuário no banco de dados.' })
   @CommonApiResponses()
@@ -47,13 +48,14 @@ export class UsersController {
     @Body() UpdateUserDto: UpdateUserDto,
     @Request() req,
   ): Promise<User> {
-    return await this.usersService.updateUser(id, UpdateUserDto, req.user.id);
+    return await this.usersService.updateUser(id, UpdateUserDto, req.user.sub);
   }
 
+  @UseGuards(AuthGuard('jwt'))
   @Delete('delete-user/:id')
   @ApiOperation({ summary: 'Apaga um usuário existente no banco de dados.' })
   @CommonApiResponses()
   async deleteUser(@Param('id', ParseIntPipe) id: number, @Request() req) {
-    return await this.usersService.deleteUser(id, req.user.id);
+    return await this.usersService.deleteUser(id, req.user.sub);
   }
 }

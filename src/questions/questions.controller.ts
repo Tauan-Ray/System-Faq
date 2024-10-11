@@ -41,7 +41,7 @@ export class QuestionsController {
   ): Promise<Question> {
     return await this.questionsServices.createQuestion(
       createQuestionDto,
-      req.user.id,
+      req.user.sub,
     );
   }
 
@@ -56,7 +56,7 @@ export class QuestionsController {
     return await this.questionsServices.updateQuestion(
       id,
       updateQuestionDto,
-      req.user.id,
+      req.user.sub,
     );
   }
 
@@ -64,6 +64,6 @@ export class QuestionsController {
   @ApiOperation({ summary: 'Apaga uma pergunta existente no banco de dados.' })
   @CommonApiResponses()
   async deleteQuestion(@Param('id', ParseIntPipe) id: number, @Request() req) {
-    return await this.questionsServices.deleteQuestion(id, req.user.id);
+    return await this.questionsServices.deleteQuestion(id, req.user.sub);
   }
 }

@@ -37,16 +37,37 @@ export class CategoriesService {
   }
 
   async deleteCategory(id: number): Promise<{ message: string }> {
-    const existingCategory = await this.prisma.categories.findUnique({
-      where: { id },
-    });
-    if (!existingCategory) {
-      throw new HttpException('Usuário não encontrado.', HttpStatus.NOT_FOUND);
-    }
+    try {
+      const existingCategory = await this.prisma.categories.findUnique({
+        where: { id },
+      });
+      if (!existingCategory) {
+        throw new HttpException(
+          'Categoria não encontrada.',
+          HttpStatus.NOT_FOUND,
+        );
+      }
 
-    await this.prisma.categories.delete({
-      where: { id },
-    });
-    return { message: 'Categoria deletada com sucesso.' };
+      await this.prisma.categories.delete({
+        where: { id },
+      });
+      return { message: 'Categoria deletada com sucesso.' };
+    } catch (error) {
+      if (error instanceof HttpException) {
+        throw error;
+      }
+
+      if (error.code === 'P2003') {
+        throw new HttpException(
+          'Categoria ainda possui perguntas associadas.',
+          HttpStatus.BAD_REQUEST,
+        );
+      }
+
+      throw new HttpException(
+        'Erro ao atualizar a pergunta.',
+        HttpStatus.INTERNAL_SERVER_ERROR,
+      );
+    }
   }
 }

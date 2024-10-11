@@ -1,4 +1,4 @@
-import { Controller, Post, UseGuards, Body } from '@nestjs/common';
+import { Controller, Post, UseGuards, Body, Request } from '@nestjs/common';
 import { AuthGuard } from '@nestjs/passport';
 import { AuthService } from './auth.service';
 import { RefreshTokenDto } from './dto/refresh.dto';
@@ -15,8 +15,8 @@ export class AuthController {
   @Post('login/')
   @ApiOperation({ summary: 'Faz login no sistema com base no email e senha.' })
   @CommonApiResponses()
-  async loginAuth(@Body() loginDto: LoginDto) {
-    return await this.authService.login(loginDto);
+  async loginAuth(@Body() loginDto: LoginDto, @Request() req) {
+    return await this.authService.login(loginDto, req.user.id);
   }
 
   @Post('refresh')
