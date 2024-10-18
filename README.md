@@ -55,11 +55,13 @@ O objetivo deste projeto é desenvolver um sistema de FAQ utilizando o framework
 
 # clonagem e instalação <a name="id04"></a>
 
+## Ativação da API
 Clone este repositório usando o comando e entre na pasta do projeto:
 
 ```bash
 $ git clone https://github.com/Tauan-Ray/System-Faq.git
 $ cd System-Faq
+$ cd Server
 ```
 <br>
 
