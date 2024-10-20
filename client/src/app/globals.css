@@ -1,0 +1,227 @@
+/* Estilos gerais */
+* {
+  box-sizing: border-box;
+  padding: 0;
+  margin: 0;
+  background-color: #FCFCFC;
+}
+
+header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  border-bottom: 1px solid #90A4AE;
+  padding: 10px;
+  flex-wrap: wrap; /* Adiciona para quebrar a linha em telas menores */
+}
+
+header > a {
+  padding-left: 64px;
+  padding: 16px 255px 16px 64px;
+  margin-right: 50px;
+}
+
+.form-header {
+  padding: 44px 0px;
+  margin-left: 50px;
+}
+
+.search-bar {
+  width: 576px;
+  display: flex;
+}
+
+.input-search {
+  width: 526px;
+  height: 39px;
+  border: 1px solid #4F86C6;
+  border-right: 2px solid #808080;
+  border-radius: 8px 0px 0px 8px;
+  padding-right: 2px;
+  padding-left: 15px;
+  font-size: 18px;
+}
+
+.input-search:focus {
+  outline: none;
+}
+
+.button-search {
+  border: 1px solid #4F86C6;
+  border-left: none;
+  border-radius: 0px 8px 8px 0px;
+}
+
+.fa-magnifying-glass {
+  font-size: 28px;
+  width: 48px;
+  height: 32px;
+  margin-top: 5px;
+  margin-right: 5px;
+  background-color: #FCFCFC;
+  color: #5178A8;
+}
+
+.fa-magnifying-glass:hover {
+  cursor: pointer;
+}
+
+nav {
+  height: 60px;
+  padding-right: 60px;
+  display: flex;
+  margin-left: auto;
+}
+
+.button-enter {
+  width: 117px;
+  height: 38px;
+  border-radius: 8px;
+  border: none;
+  background-color: #66A0CB;
+  color: #FFFFFF;
+  margin-left: 28px;
+  margin-top: 11px;
+  font-family: "Poppins", sans-serif;
+  transition: background-color 400ms ease;
+  cursor: pointer;
+}
+
+.button-enter:hover {
+  background-color: #4FB0C6;
+}
+
+.button-profile {
+  display: inline-block;
+  height: 50px;
+  width: 50px;
+  margin-left: 28px;
+  margin-top: 5px;
+  padding-bottom: 9px;
+  border: 1px solid #66A0CB;
+  border-radius: 50%;
+}
+
+.fa-user {
+  margin-top: 5px;
+  font-size: 32px;
+  color: #66A0CB;
+  transition: color 300ms;
+}
+
+.fa-user:hover {
+  color: #0067B8;
+}
+
+/* ================== MEDIA QUERIES =================== */
+
+/* Telas médias, como tablets (768px a 1024px) */
+@media (max-width: 1024px) {
+  header {
+    flex-direction: column;
+    align-items: center;
+  }
+
+  header > a {
+    padding-right: 0px;
+  }
+
+  .form-header {
+    width: 600px;
+    padding-bottom: 20px;
+  }
+
+  .search-bar {
+    width: 100%;
+  }
+
+  .input-search {
+    width: 100%;
+    font-size: 16px;
+  }
+
+  .button-enter {
+    width: 100px;
+    margin-left: 15px;
+  }
+
+  nav {
+    padding-right: 0;
+    margin-left: 65px;
+    margin: 0px;
+  }
+
+  .button-profile {
+    height: 40px;
+    width: 40px;
+  }
+
+  .fa-user {
+    font-size: 24px;
+  }
+}
+
+/* Telas pequenas, como smartphones (até 768px) */
+@media (max-width: 768px) {
+  header {
+    flex-direction: column;
+    padding: 20px;
+  }
+
+  header > a {
+    padding-left: 0;
+    padding: 10px;
+    margin-right: 0px;
+  }
+
+  .form-header {
+    width: 100%;
+    padding: 20px 0;
+    margin-left: 0px;
+  }
+
+  .search-bar {
+    width: 100%;
+    margin-bottom: 15px;
+  }
+
+  .input-search {
+    width: calc(100% - 50px);
+    height: 35px;
+    font-size: 16px;
+  }
+
+  .button-search {
+    width: 50px;
+    height: 35px;
+    padding-bottom: 4px;
+  }
+
+  .fa-magnifying-glass {
+    font-size: 24px;
+    height: 15px;
+  }
+
+  nav {
+    flex-direction: row;
+    padding-right: 0;
+    justify-content: center;
+    width: 100%;
+    margin-top: 10px;
+  }
+
+  .button-enter {
+    width: 90px;
+    margin-left: 10px;
+  }
+
+  .button-profile {
+    height: 40px;
+    width: 40px;
+    margin-top: 8px;
+  }
+
+  .fa-user {
+    font-size: 24px;
+  }
+}
