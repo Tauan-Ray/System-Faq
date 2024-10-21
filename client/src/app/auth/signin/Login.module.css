@@ -3,13 +3,14 @@
     display: flex;
     justify-content: center;
     align-items: center;
-    height: 620px;
+    height: auto;
     margin: 0 auto;
+    margin-top: 30px;
 }
 
 .area_login {
     width: 911px;
-    height: 446px;
+    height: auto;
     margin: 0 auto;
     border: 1px solid #90A4AE;
     border-radius: 8px;
@@ -46,6 +47,7 @@
     padding-top: 18px;
     background-color: #E0E0E0;
     padding-left: 57px;
+    padding-bottom: 15px;
 }
 
 .div_input {
@@ -122,6 +124,14 @@
 
 .button_login:hover {
     background-color: #4F86C6;
+}
+
+.error_message {
+    background-color: #E0E0E0;
+    color: rgb(209, 61, 61);
+    font-size: 14px;
+    font-family: 'Poppins', sans-serif;
+    margin-top: 5px;
 }
 
 
@@ -222,7 +232,7 @@
         width: 60%;
         height: 45px;
         margin: 20px 70px;
-        
+
     }
 
     .image_div {
