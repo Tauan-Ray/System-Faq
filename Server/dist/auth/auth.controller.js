@@ -20,12 +20,16 @@ const refresh_dto_1 = require("./dto/refresh.dto");
 const swagger_1 = require("@nestjs/swagger");
 const login_dto_1 = require("./dto/login.dto");
 const common_api_responses_decorator_1 = require("../common-api-responses.decorator");
+const create_user_dto_1 = require("../users/dto/create-user.dto");
 let AuthController = class AuthController {
     constructor(authService) {
         this.authService = authService;
     }
     async loginAuth(loginDto, req) {
         return await this.authService.login(loginDto, req.user.id);
+    }
+    async registerAuth(createUserDto) {
+        return await this.authService.register(createUserDto);
     }
     async refresh(refreshTokenDto) {
         const { refresh_token } = refreshTokenDto;
@@ -44,6 +48,15 @@ __decorate([
     __metadata("design:paramtypes", [login_dto_1.LoginDto, Object]),
     __metadata("design:returntype", Promise)
 ], AuthController.prototype, "loginAuth", null);
+__decorate([
+    (0, common_1.Post)('register/'),
+    (0, swagger_1.ApiOperation)({ summary: 'Faz login no sistema com base no email e senha.' }),
+    (0, common_api_responses_decorator_1.CommonApiResponses)(),
+    __param(0, (0, common_1.Body)()),
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", [create_user_dto_1.CreateUserDto]),
+    __metadata("design:returntype", Promise)
+], AuthController.prototype, "registerAuth", null);
 __decorate([
     (0, common_1.Post)('refresh'),
     (0, swagger_1.ApiOperation)({ summary: 'Gera um novo token de refresh.' }),

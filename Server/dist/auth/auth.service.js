@@ -30,6 +30,18 @@ let AuthService = class AuthService {
             refresh_token: refreshToken,
         };
     }
+    async register(createUserDto) {
+        const user = await this.usersService.createUser(createUserDto);
+        const payload = { email: user.email, sub: user.id };
+        const accessToken = this.jwtService.sign(payload);
+        const refreshToken = this.jwtService.sign(payload, {
+            expiresIn: '7d',
+        });
+        return {
+            access_token: accessToken,
+            refresh_token: refreshToken,
+        };
+    }
     async refreshToken(refreshToken) {
         try {
             const payload = this.jwtService.verify(refreshToken);
