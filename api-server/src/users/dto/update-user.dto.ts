@@ -18,7 +18,6 @@ export class UpdateUserDto {
   email: string;
 
   @IsOptional()
-  @IsString()
   @Length(8, 20, {
     message: 'Sua senha deve ter no mínimo 8 caracteres e no máximo 20',
   })

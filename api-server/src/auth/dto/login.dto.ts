@@ -1,9 +1,8 @@
 import { ApiProperty } from '@nestjs/swagger';
-import { IsEmail, IsNotEmpty, IsString, Length } from 'class-validator';
+import { IsEmail, IsNotEmpty, Length } from 'class-validator';
 
 export class LoginDto {
-  @IsString()
-  @IsNotEmpty()
+  @IsNotEmpty({ message: 'O campo de email não deve ser vazio!' })
   @IsEmail()
   @ApiProperty({
     description: 'Email do usuário.',
@@ -11,8 +10,7 @@ export class LoginDto {
   })
   email: string;
 
-  @IsString()
-  @IsNotEmpty()
+  @IsNotEmpty({ message: 'O campo de senha não pode ser vazio.' })
   @Length(8, 20, {
     message: 'Sua senha deve ter no mínimo 8 caracteres e no máximo 20',
   })

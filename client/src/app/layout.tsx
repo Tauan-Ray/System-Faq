@@ -3,6 +3,8 @@ import type { Metadata } from "next";
 import Image from "next/image";
 import "./globals.css"
 import Script from "next/script";
+import HeaderSite from "./components/HeaderSite";
+import Link from "next/link";
 
 export const metadata: Metadata = {
   title: "Create Next App",
@@ -24,15 +26,15 @@ export default function RootLayout({
       </head>
       <body>
         <header>
-          <a href="#">
-          <Image
-            src={"/logo_site.png"}
-            alt="Logo Site"
-            priority
-            width={226}
-            height={95}
-          />
-          </a>
+          <Link href="/">
+            <Image
+              src={"/logo_site.png"}
+              alt="Logo Site"
+              priority
+              width={226}
+              height={95}
+            />
+          </Link>
 
           <form action="" className="form-header">
             <div className="search-bar">
@@ -41,12 +43,7 @@ export default function RootLayout({
             </div>
           </form>
 
-          <nav>
-            <button type="button" className="button-enter" >Login</button>
-            <button type="button" className="button-enter" >Cadastro</button>
-            <button type="button" className="button-profile"><i className="fa-solid fa-user"></i></button>
-            
-          </nav>
+          <HeaderSite />
 
         </header>
         {children}

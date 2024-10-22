@@ -1,7 +1,7 @@
-import styles from './Login.module.css'
+import styles from '@/app/styles/Login.module.css'
 import Image from 'next/image';
 import Head from 'next/head';
-import LoginForm from '@/app/components/LoginForm';
+import LoginForm from '@/app/components/auth/LoginForm';
 
 const LoginPage = () => {
     return (
@@ -36,4 +36,4 @@ const LoginPage = () => {
     );
 };
 
-export default LoginPage
+export default LoginPage;

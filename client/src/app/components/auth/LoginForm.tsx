@@ -1,14 +1,14 @@
 "use client"
 
 import { useState } from 'react';
-import styles from '../auth/signin/Login.module.css'
+import styles from '@/app/styles/Login.module.css'
 import Cookies from 'js-cookie';
 import { useRouter } from 'next/navigation';
 
 const LoginForm = () => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
-  const [errorMessage, setErrorMessage] = useState('');
+  const [errorMessage, setErrorMessage] = useState(['']);
   const router  = useRouter();
 
   const handleLogin = async (event: React.FormEvent<HTMLFormElement>) => {
@@ -31,7 +31,8 @@ const LoginForm = () => {
         router.push('/');
       } else {
         const errorData = await response.json();
-        setErrorMessage(errorData.message || 'Falha no Login')
+            const errorMessages = Array.isArray(errorData.message) ? errorData.message : [errorData.message];
+            setErrorMessage(errorMessages || ['Falha no Cadastro.']);
       }
     } catch (error) {
       console.error('Erro ao fazer login', error);
@@ -40,12 +41,12 @@ const LoginForm = () => {
 
   const handleEmailChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setEmail(e.target.value);
-    if (errorMessage) setErrorMessage('');
+    if (errorMessage) setErrorMessage(['']);
   };
 
   const handlePasswordChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setPassword(e.target.value);
-    if (errorMessage) setErrorMessage('');
+    if (errorMessage) setErrorMessage(['']);
   };
 
   return (
@@ -80,7 +81,9 @@ const LoginForm = () => {
         <a href="" className={styles.link_to_sign}>Crie agora!</a>
         </p>
 
-        {errorMessage && <p className={styles.error_message}> {errorMessage} </p>}
+        {errorMessage && errorMessage.map((error, index) => (
+          <p className={styles.error_message} key={index}>{error}</p>
+        ))}
 
         <button type="submit" className={styles.button_login} aria-label='Fazer Login'>Login</button>
     </form>

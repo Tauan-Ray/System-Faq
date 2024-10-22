@@ -1,7 +1,7 @@
-import styles from '../signin/Login.module.css'
+import styles from '@/app/styles/Login.module.css'
 import Image from 'next/image';
 import Head from 'next/head';
-import RegisterForm from '@/app/components/SignUpForm';
+import RegisterForm from '@/app/components/auth/SignUpForm';
 
 const RegisterPage = () => {
     return (

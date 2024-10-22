@@ -1,7 +1,7 @@
 "use client"
 
 import { useState } from 'react';
-import styles from '../auth/signin/Login.module.css'
+import styles from '@/app/styles/Login.module.css'
 import Cookies from 'js-cookie';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
@@ -11,14 +11,25 @@ const RegisterForm = () => {
   const [password, setPassword] = useState('');
   const [confirmPassword, setConfirmPassword] = useState('');
   const [name, setName] = useState('');
-  const [errorMessage, setErrorMessage] = useState('');
+  const [errorMessage, setErrorMessage] = useState(['']);
   const router  = useRouter();
 
   const handleRegister = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
 
+    const isNumeric = /^\d+$/.test(name);
+    if (isNumeric) {
+      setErrorMessage(['O nome de usuário não deve ser composta apenas de número.']);
+      return;
+    }
+
+    if (password !== confirmPassword) {
+      setErrorMessage(['As senhas não coincidem.']);
+      return;
+    }
+
     try {
-        const response = await fetch('http://localhost:3000/users/create-user', {
+        const response = await fetch('http://localhost:3000/auth/register', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
@@ -34,31 +45,37 @@ const RegisterForm = () => {
             router.push('/');
         } else {
             const errorData = await response.json();
-            setErrorMessage(errorData.message || 'Falha no Cadastro.')
+            const errorMessages = Array.isArray(errorData.message) ? errorData.message : [errorData.message];
+            setErrorMessage(errorMessages || ['Falha no Cadastro.'])
         }
-    } catch (error) {
-        console.error('Erro ao fazer login', error);
+    } catch (error: unknown) {
+        if (error instanceof Error) {
+          setErrorMessage([error.message]);
+        } else {
+          console.error('Erro desconhecido', error)
+        }
+
     }
 }
 
   const handleNameChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setName(e.target.value);
-    if (errorMessage) setErrorMessage('');
+    if (errorMessage) setErrorMessage(['']);
   };
 
   const handleEmailChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setEmail(e.target.value);
-    if (errorMessage) setErrorMessage('');
+    if (errorMessage) setErrorMessage(['']);
   };
 
   const handlePasswordChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setPassword(e.target.value);
-    if (errorMessage) setErrorMessage('');
+    if (errorMessage) setErrorMessage(['']);
   };
 
   const handleConfirmPasswordChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setConfirmPassword(e.target.value);
-    if (errorMessage) setErrorMessage('');
+    if (errorMessage) setErrorMessage(['']);
   };
 
   return (
@@ -121,7 +138,10 @@ const RegisterForm = () => {
         </Link>
         </p>
 
-        {errorMessage && <p className={styles.error_message}> {errorMessage} </p>}
+        {errorMessage && errorMessage.map((error, index) => (
+          <p className={styles.error_message} key={index}>{error}</p>
+        ))}
+
 
         <button type="submit" className={styles.button_login} aria-label='Fazer Cadastro'>Cadastrar</button>
     </form>
