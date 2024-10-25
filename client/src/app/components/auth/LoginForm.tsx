@@ -2,7 +2,6 @@
 
 import { useState } from 'react';
 import styles from '@/app/styles/Login.module.css'
-import Cookies from 'js-cookie';
 import { useRouter } from 'next/navigation';
 
 const LoginForm = () => {
@@ -15,7 +14,7 @@ const LoginForm = () => {
     event.preventDefault();
 
     try {
-      const response = await fetch('http://localhost:3000/auth/login', {
+      const response = await fetch('/api/login', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -24,18 +23,15 @@ const LoginForm = () => {
       });
 
       if (response.ok) {
-        const data = await response.json();
-
-        Cookies.set('access_token', data.access_token);
-        Cookies.set('refresh_token', data.refresh_token);
-        router.push('/');
+        router.push('/')
       } else {
         const errorData = await response.json();
-            const errorMessages = Array.isArray(errorData.message) ? errorData.message : [errorData.message];
-            setErrorMessage(errorMessages || ['Falha no Cadastro.']);
+
+        const errorMessages = Array.isArray(errorData.message) ? errorData.message : [errorData.message];
+        setErrorMessage(errorMessages || ['Falha no Login.']);
       }
-    } catch (error) {
-      console.error('Erro ao fazer login', error);
+    } catch {
+      console.error('Erro ao fazer login');
     }
   };
 
@@ -50,7 +46,7 @@ const LoginForm = () => {
   };
 
   return (
-    <form onSubmit={handleLogin} className={styles.form_login}>
+    <form method='POST' onSubmit={handleLogin} className={styles.form_login}>
         <div className={styles.div_input}>
         <label htmlFor="email" className={styles.label_input}>E-mail</label>
         <input

@@ -2,7 +2,6 @@
 
 import { useState } from 'react';
 import styles from '@/app/styles/Login.module.css'
-import Cookies from 'js-cookie';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 
@@ -19,7 +18,7 @@ const RegisterForm = () => {
 
     const isNumeric = /^\d+$/.test(name);
     if (isNumeric) {
-      setErrorMessage(['O nome de usuário não deve ser composta apenas de número.']);
+      setErrorMessage(['O nome de usuário não deve ser composto apenas de número.']);
       return;
     }
 
@@ -29,32 +28,24 @@ const RegisterForm = () => {
     }
 
     try {
-        const response = await fetch('http://localhost:3000/auth/register', {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json',
-            },
-            body: JSON.stringify({ name, email, password }),
-        });
+      const response = await fetch('/api/register', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ name, email, password }),
+      });
 
-        if (response.ok) {
-            const data = await response.json();
+      if (response.ok) {
+        router.push('/');
+      } else {
+        const errorData = await response.json();
 
-            Cookies.set('access_token', data.access_token);
-            Cookies.set('refresh_token', data.refresh_token);
-            router.push('/');
-        } else {
-            const errorData = await response.json();
-            const errorMessages = Array.isArray(errorData.message) ? errorData.message : [errorData.message];
-            setErrorMessage(errorMessages || ['Falha no Cadastro.'])
-        }
-    } catch (error: unknown) {
-        if (error instanceof Error) {
-          setErrorMessage([error.message]);
-        } else {
-          console.error('Erro desconhecido', error)
-        }
-
+        const errorMessages = Array.isArray(errorData.message) ? errorData.message : [errorData.message];
+        setErrorMessage(errorMessages || ['Falha no Cadastro.']);
+      }
+    } catch {
+      console.error('Erro ao fazer cadastro.');
     }
 }
 
