@@ -4,6 +4,7 @@ import { useState } from 'react';
 import styles from '@/app/styles/Login.module.css'
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
+import InputPassword from './InputPassword';
 
 const RegisterForm = () => {
   const [email, setEmail] = useState('');
@@ -99,34 +100,30 @@ const RegisterForm = () => {
 
         <div className={styles.div_input}>
         <label htmlFor="password" className={styles.label_input}>Senha</label>
-        <input
-        type="password"
-        placeholder='Senha'
-        name='password'
-        className={styles.input_form}
-        aria-label='Senha'
-        value={password}
-        onChange={handlePasswordChange}
-        required/>
+
+        <InputPassword
+          password={password}
+          confirmPassword={confirmPassword}
+          handlePasswordChange={handlePasswordChange}
+          isConfirmPassword = {false}
+        />
+
         </div>
 
         <div className={styles.div_input}>
-        <label htmlFor="confirm-password" className={styles.label_input}>Confirme sua senha</label>
-        <input
-        type="password"
-        placeholder='Confirme sua senha'
-        name='password'
-        className={styles.input_form}
-        aria-label='Confirma senha'
-        value={confirmPassword}
-        onChange={handleConfirmPasswordChange}
-        required/>
+          <label htmlFor="confirm-password" className={styles.label_input}>Confirme sua senha</label>
+          <InputPassword
+            password={password}
+            confirmPassword={confirmPassword}
+            handlePasswordChange={handleConfirmPasswordChange}
+            isConfirmPassword = {true}
+          />
         </div>
 
         <p className={styles.text_to_sign}>Ja possui uma conta?
-        <Link href="/auth/signin" className={styles.link_to_sign}>
-            Entre Agora!
-        </Link>
+          <Link href="/auth/signin" className={styles.link_to_sign}>
+              Entre Agora!
+          </Link>
         </p>
 
         {errorMessage && errorMessage.map((error, index) => (

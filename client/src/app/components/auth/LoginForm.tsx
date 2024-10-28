@@ -3,6 +3,7 @@
 import { useState } from 'react';
 import styles from '@/app/styles/Login.module.css'
 import { useRouter } from 'next/navigation';
+import InputPassword from './InputPassword';
 
 const LoginForm = () => {
   const [email, setEmail] = useState('');
@@ -62,15 +63,10 @@ const LoginForm = () => {
 
         <div className={styles.div_input}>
         <label htmlFor="password" className={styles.label_input}>Senha</label>
-        <input
-        type="password"
-        placeholder='Senha'
-        name='password'
-        className={styles.input_form}
-        aria-label='Senha'
-        value={password}
-        onChange={handlePasswordChange}
-        required/>
+          <InputPassword
+            password={password}
+            handlePasswordChange={handlePasswordChange}
+          />
         </div>
 
         <p className={styles.text_to_sign}>Não tem uma conta?
