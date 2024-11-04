@@ -17,7 +17,7 @@ export class AuthController {
   @ApiOperation({ summary: 'Faz login no sistema com base no email e senha.' })
   @CommonApiResponses()
   async loginAuth(@Body() loginDto: LoginDto, @Request() req) {
-    return await this.authService.login(loginDto, req.user.id);
+    return await this.authService.login(loginDto, req.user.id, req.user.name);
   }
 
   @Post('register/')

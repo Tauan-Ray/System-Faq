@@ -12,8 +12,8 @@ export class AuthService {
     private readonly jwtService: JwtService,
   ) {}
 
-  async login(user, user_id: number) {
-    const payload = { sub: user_id, email: user.email };
+  async login(user, user_id: number, username: string) {
+    const payload = { sub: user_id, email: user.email, username: username };
     const accessToken = this.jwtService.sign(payload);
 
     const refreshToken = this.jwtService.sign(payload, {
@@ -29,7 +29,11 @@ export class AuthService {
   async register(createUserDto: CreateUserDto) {
     const user = await this.usersService.createUser(createUserDto);
 
-    const payload = { email: user.email, sub: user.id };
+    const payload = {
+      email: user.email,
+      sub: user.id,
+      username: createUserDto.name,
+    };
     const accessToken = this.jwtService.sign(payload);
 
     const refreshToken = this.jwtService.sign(payload, {
