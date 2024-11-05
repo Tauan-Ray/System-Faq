@@ -53,24 +53,15 @@ export class UsersService {
     });
   }
 
-  async updateUser(
-    id: number,
-    updateUserDto: UpdateUserDto,
-    user_id_request: number,
-  ): Promise<User> {
-    const { email } = updateUserDto;
-
-    const existingUser = await this.prisma.users.findUnique({ where: { id } });
-
-    if (!existingUser) {
-      throwNotFoundError('Usuário');
-    }
+  async updateUser(updateUserDto: UpdateUserDto): Promise<User> {
+    const { email, id } = updateUserDto;
 
     if (email) {
-      const existingEmailUser = await this.prisma.users.findUnique({
+      const existingUser = await this.prisma.users.findUnique({
         where: { email },
       });
-      if (existingEmailUser && existingEmailUser.id !== id) {
+
+      if (existingUser) {
         throw new HttpException(
           'Email já registrado no sistema.',
           HttpStatus.BAD_REQUEST,
@@ -78,22 +69,11 @@ export class UsersService {
       }
     }
 
-    checkPermission(user_id_request, existingUser);
-
-    let password = updateUserDto.password;
-    const role = updateUserDto.role;
-
-    if (password) {
-      password = await bcrypt.hash(password, 10);
-    }
-
     return await this.prisma.users.update({
       where: { id },
       data: {
         name: updateUserDto.name,
         email: updateUserDto.email,
-        password: password || existingUser.password,
-        role: role ?? existingUser.role,
       },
     });
   }

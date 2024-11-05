@@ -40,15 +40,11 @@ export class UsersController {
   }
 
   @UseGuards(AuthGuard('jwt'))
-  @Patch('update-user/:id')
+  @Patch('update-user/')
   @ApiOperation({ summary: 'Atualiza um usuário no banco de dados.' })
   @CommonApiResponses()
-  async updateUser(
-    @Param('id', ParseIntPipe) id: number,
-    @Body() UpdateUserDto: UpdateUserDto,
-    @Request() req,
-  ): Promise<User> {
-    return await this.usersService.updateUser(id, UpdateUserDto, req.user.sub);
+  async updateUser(@Body() updateUserDto: UpdateUserDto): Promise<User> {
+    return await this.usersService.updateUser(updateUserDto);
   }
 
   @UseGuards(AuthGuard('jwt'))

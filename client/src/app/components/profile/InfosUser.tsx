@@ -18,14 +18,12 @@ interface UserInfo {
 
 const InfosUser = ({ access_token } : InfosUserProps) => {
     const [userInfos, setUserInfo] = useState<UserInfo | null>(null);
+    const [isEditing, setIsEditing] = useState(false);
+    const [originalEmail, setOriginalEmail] = useState<string | null>(null);
+    const [errorMessage, setErrorMessage] = useState(['']);
     const router = useRouter();
 
     useEffect(() => {
-        if (!access_token) {
-            router.push('/auth/signin');
-            return
-        }
-
         const fetchUserInfo = async () => {
             const response = await fetch('/api/decode-token', {
                 method: 'POST',
@@ -38,6 +36,7 @@ const InfosUser = ({ access_token } : InfosUserProps) => {
             if (response.ok) {
                 const data = await response.json();
                 setUserInfo(data);
+                setOriginalEmail(data.email);
             } else {
                 console.error('Erro ao decodificar o token:', response.statusText)
             }
@@ -46,17 +45,59 @@ const InfosUser = ({ access_token } : InfosUserProps) => {
         fetchUserInfo();
     }, [access_token, router])
 
+
+    const handleEditToggle = () => {
+        setIsEditing(!isEditing);
+    }
+
+
+    const handleSave = async () => {
+        try {
+            if (!userInfos || userInfos.sub === undefined || userInfos.username === undefined || userInfos.email === undefined) {
+                console.error("Dados do usuário inválidos");
+                return;
+            }
+
+            const { sub: id, username: name, email } = userInfos;
+            const userData = { id, name, email };
+            const updatedUserData = (email === originalEmail) ? { id, name } : userData;
+
+            const response = await fetch('api/update-user', {
+                method: 'PATCH',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify(updatedUserData)
+            });
+
+            if (response.ok) {
+                setIsEditing(false);
+                window.location.href = '/auth/signin';
+            } else {
+                const errorData = await response.json();
+
+                const errorMessages = Array.isArray(errorData.message) ? errorData.error : [errorData.error];
+                setErrorMessage(errorMessages || ['Falha na atualização.']);
+            }
+        } catch (error) {
+            console.error('Erro na requisição: ', error);
+            setErrorMessage(['Erro a atualizar o usuário. Tente novamente.'])
+        }
+    }
+
     return (
-            <form>
+            <form method="POST">
                 <div style={{display: "flex"}}>
                     <div className={styles.div_infos}>
                         <label htmlFor="username" className={styles.label_input}>Nome de usuário</label>
                         <input
                         type="text"
-                        className={styles.input_info}
+                        className={`${styles.input_info} ${isEditing ? styles.editable : ''}`}
                         name="username"
-                        disabled
-                        value={userInfos ? userInfos.username : ''}/>
+                        disabled={!isEditing}
+                        value={userInfos ? userInfos.username : ''}
+                        onChange={(e) => setUserInfo({ ...userInfos, username: e.target.value } as UserInfo)}
+                        />
                     </div>
 
                     <div className={styles.div_infos}>
@@ -70,13 +111,23 @@ const InfosUser = ({ access_token } : InfosUserProps) => {
                         <label htmlFor="email" className={styles.label_input}>E-mail</label>
                         <input
                         type="text"
-                        className={styles.input_info}
+                        className={`${styles.input_info} ${isEditing ? styles.editable : ''}`}
                         name="email"
-                        disabled
-                        value={userInfos ? userInfos.email : ''}/>
+                        disabled={!isEditing}
+                        value={userInfos ? userInfos.email : ''}
+                        onChange={(e) => setUserInfo({ ...userInfos, email: e.target.value } as UserInfo)}
+                        />
+
+                        {errorMessage && errorMessage.map((error, index) => (
+                            <p style={{color: 'red', marginLeft: '1px', marginTop: '8px'}} key={index}>{error}</p>
+                        ))}
                     </div>
 
-                    <button type="button" className={styles.button_edit_infos}>Editar</button>
+                    {isEditing ? (
+                        <button type="button" onClick={handleSave} className={styles.button_save}>Salvar</button>
+                    ) : (
+                        <button type="button" onClick={handleEditToggle} className={styles.button_edit_infos}>Editar</button>
+                    )}
                 </div>
             </form>
     )
