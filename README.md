@@ -61,7 +61,7 @@ Clone este repositório usando o comando e entre na pasta do projeto:
 ```bash
 $ git clone https://github.com/Tauan-Ray/System-Faq.git
 $ cd System-Faq
-$ cd Server
+$ cd api-server
 ```
 <br>
 
@@ -71,9 +71,10 @@ npm install
 ```
 <br>
 
-Crie um arquivo .env para configurar a variável de ambiente para realizar a conexão com o banco de dados:
+Crie um arquivo .env para configurar a variável de ambiente para realizar a conexão com o banco de dados e a atribuição da Secret Key para o JWT:
 ```bash
 DATABASE_URL="postgresql://usuario:senha@localhost:5432/nome-do-banco?schema=public"
+JWT_SECRET_KEY="suachavejwt"
 ```
 <br>
 
@@ -91,7 +92,36 @@ Isso iniciará o servidor Nest.js em modo de desenvolvimento. Normalmente, ele e
 Você pode usar ferramentas como Postman ou Insomnia para testar os endpoints disponíveis na API.
 <br>
 Para acessas documentação feita pelo swagger vá para http://localhost:3000/api
+<hr>
 
+## Ativando o projeto Next
+Após realizar os passos acima, faço o seguinte para poder utilizar o Next.js
+<br>
+Volte para a pasta raiz e entre na pasta referente ao Next
+```
+$ cd ..
+$ cd client
+```
+<br>
+
+Instale todas as dependências utilizando(Certifique-se de já possuir o node.js em sua máquina): 
+```bash
+npm install
+```
+<br>
+
+Crie um arquivo .env para configurar a variável de ambiente para utilizar o valor da Secret Key do JWT:
+```bash
+JWT_SECRET_KEY="suachavejwt"
+```
+<br>
+
+Agora, inicie o servidor:
+```bash
+npm run dev
+```
+
+O Next.js deve fornecer um url que vai direcionar para seu navegador com o projeto rodando.
 
 # autoria <a name="id05"></a>
 
