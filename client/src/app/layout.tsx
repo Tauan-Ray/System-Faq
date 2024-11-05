@@ -5,6 +5,7 @@ import "./globals.css"
 import Script from "next/script";
 import HeaderSite from "./components/HeaderSite";
 import Link from "next/link";
+import { cookies } from "next/headers";
 
 export const metadata: Metadata = {
   title: "Create Next App",
@@ -16,6 +17,8 @@ export default function RootLayout({
 }: Readonly<{
   children: React.ReactNode;
 }>) {
+
+  const access_token = cookies().get('access_token')?.value || '';
   return (
     <html lang="pt-br">
       <head>
@@ -43,7 +46,9 @@ export default function RootLayout({
             </div>
           </form>
 
-          <HeaderSite />
+          <HeaderSite
+            access_token={access_token}
+          />
 
         </header>
         {children}

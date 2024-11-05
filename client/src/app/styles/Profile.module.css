@@ -58,6 +58,10 @@
     font-weight: normal;
 }
 
+.input_info:focus {
+    outline: none;
+}
+
 .button_change_password {
     width: 200px;
     height: 32px;
@@ -95,8 +99,36 @@
     position: relative;
     top: 29px;
     transition: background-color 300ms;
+    cursor: pointer;
 }
 
 .button_edit_infos:hover {
     background-color: #4FB0C6;
+}
+
+
+.editable {
+    background-color: #f0f8ff; /* cor de fundo mais clara para destacar */
+    border: 1px solid #007bff; /* borda azul */
+}
+
+.button_save {
+    background-color: #4caf50; /* botão verde para salvar */
+    width: 150px;
+    height: 38px;
+    border: none;
+    border-radius: 8px;
+    color: #FFFFFF;
+    font-family: 'Poppins', sans-serif;
+    font-weight: bold;
+    text-align: center;
+    margin-left: auto;
+    position: relative;
+    top: 29px;
+    transition: background-color 500ms;
+    cursor: pointer;
+}
+
+.button_save:hover {
+    background-color: #127a16;
 }

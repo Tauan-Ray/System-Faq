@@ -2,14 +2,12 @@
 
 import { useState } from 'react';
 import styles from '@/app/styles/Login.module.css'
-import { useRouter } from 'next/navigation';
 import InputPassword from './InputPassword';
 
 const LoginForm = () => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [errorMessage, setErrorMessage] = useState(['']);
-  const router  = useRouter();
 
   const handleLogin = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
@@ -24,7 +22,7 @@ const LoginForm = () => {
       });
 
       if (response.ok) {
-        router.push('/')
+        window.location.href = '/';
       } else {
         const errorData = await response.json();
 

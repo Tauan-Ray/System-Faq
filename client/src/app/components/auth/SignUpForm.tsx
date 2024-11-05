@@ -3,7 +3,6 @@
 import { useState } from 'react';
 import styles from '@/app/styles/Login.module.css'
 import Link from 'next/link';
-import { useRouter } from 'next/navigation';
 import InputPassword from './InputPassword';
 
 const RegisterForm = () => {
@@ -12,7 +11,6 @@ const RegisterForm = () => {
   const [confirmPassword, setConfirmPassword] = useState('');
   const [name, setName] = useState('');
   const [errorMessage, setErrorMessage] = useState(['']);
-  const router  = useRouter();
 
   const handleRegister = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
@@ -38,7 +36,7 @@ const RegisterForm = () => {
       });
 
       if (response.ok) {
-        router.push('/');
+        window.location.href = '/';
       } else {
         const errorData = await response.json();
 
