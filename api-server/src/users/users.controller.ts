@@ -17,6 +17,7 @@ import { UpdateUserDto } from './dto/update-user.dto';
 import { ApiTags, ApiOperation, ApiResponse } from '@nestjs/swagger';
 import { CommonApiResponses } from 'src/common-api-responses.decorator';
 import { AuthGuard } from '@nestjs/passport';
+import { ChangePasswordDto } from './dto/change-password.dto';
 
 @ApiTags('users')
 @Controller('users')
@@ -45,6 +46,15 @@ export class UsersController {
   @CommonApiResponses()
   async updateUser(@Body() updateUserDto: UpdateUserDto): Promise<User> {
     return await this.usersService.updateUser(updateUserDto);
+  }
+
+
+  @UseGuards(AuthGuard('jwt'))
+  @Patch('update-user/change-password')
+  @ApiOperation({ summary: 'Atualiza a senha de um usuário no banco de dados.' })
+  @CommonApiResponses()
+  async changePassword(@Body() changePasswordDto: ChangePasswordDto, @Request() req): Promise<User> {
+    return await this.usersService.changePassword(changePasswordDto, req.user.sub,);
   }
 
   @UseGuards(AuthGuard('jwt'))

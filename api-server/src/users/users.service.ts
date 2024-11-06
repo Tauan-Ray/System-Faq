@@ -14,6 +14,7 @@ import {
   checkPermission,
   throwNotFoundError,
 } from 'src/utils/check.permissions';
+import { ChangePasswordDto } from './dto/change-password.dto';
 
 @Injectable()
 export class UsersService {
@@ -74,6 +75,33 @@ export class UsersService {
       data: {
         name: updateUserDto.name,
         email: updateUserDto.email,
+      },
+    });
+  }
+
+
+  async changePassword(changePasswordDto: ChangePasswordDto, id: number): Promise<User> {
+    const { currentPassword, password } = changePasswordDto;
+
+    const existingUser = await this.prisma.users.findUnique({
+      where: { id },
+    });
+
+    const isPasswordValid = await bcrypt.compare(currentPassword, existingUser.password)
+
+    if (!isPasswordValid) {
+      throw new HttpException(
+        'Senha atual incorreta.',
+        HttpStatus.BAD_REQUEST,
+      );
+    }
+
+    const hashedPassword = await bcrypt.hash(password, 10);
+
+    return await this.prisma.users.update({
+      where: { id },
+      data: {
+        password: hashedPassword,
       },
     });
   }

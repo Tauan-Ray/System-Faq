@@ -18,7 +18,7 @@ const InputPassword: React.FC<InputPasswordProps> = ({
 
     const handleTogglePassword = () => {
         setIsPasswordVisible(!isPasswordVisible)
-      }
+    }
 
 
     return (
@@ -33,7 +33,7 @@ const InputPassword: React.FC<InputPasswordProps> = ({
           onChange={handlePasswordChange}
           required
           style={{
-            width: "90%",
+            width: "85%",
             borderTopRightRadius: "0px",
             borderBottomRightRadius: "0px",
             borderRight: "0px",

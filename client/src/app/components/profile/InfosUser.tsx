@@ -102,7 +102,13 @@ const InfosUser = ({ access_token } : InfosUserProps) => {
 
                     <div className={styles.div_infos}>
                         <label className={styles.label_input}>Senha</label>
-                        <button type="button" className={styles.button_change_password}>Alterar senha</button>
+                        <button
+                        type="button"
+                        disabled={isEditing}
+                        className={styles.button_change_password}
+                        onClick={() => router.push('profile/change-password')}>
+                            Alterar senha
+                        </button>
                     </div>
                 </div> { /* div_top */ }
 
@@ -124,7 +130,10 @@ const InfosUser = ({ access_token } : InfosUserProps) => {
                     </div>
 
                     {isEditing ? (
-                        <button type="button" onClick={handleSave} className={styles.button_save}>Salvar</button>
+                        <div style={{width: '99%' ,display: "flex", alignItems: "end", gap: "15px"}}>
+                        <button type="button" className={styles.button_cancel} >Cancelar</button>
+                        <button type="button" onClick={handleSave} style={{marginLeft: "0px"}} className={styles.button_save}>Salvar</button>
+                        </div>
                     ) : (
                         <button type="button" onClick={handleEditToggle} className={styles.button_edit_infos}>Editar</button>
                     )}

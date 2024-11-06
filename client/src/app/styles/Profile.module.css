@@ -113,7 +113,7 @@
 }
 
 .button_save {
-    background-color: #4caf50; /* botão verde para salvar */
+    background-color: #66A0CB; /* botão verde para salvar */
     width: 150px;
     height: 38px;
     border: none;
@@ -130,5 +130,26 @@
 }
 
 .button_save:hover {
-    background-color: #127a16;
+    background-color: #5178A8;
+}
+
+.button_cancel {
+    background-color: #3C5185; /* botão verde para salvar */
+    width: 150px;
+    height: 38px;
+    border: none;
+    border-radius: 8px;
+    color: #FFFFFF;
+    font-family: 'Poppins', sans-serif;
+    font-weight: bold;
+    text-align: center;
+    margin-left: auto;
+    position: relative;
+    top: 29px;
+    transition: background-color 500ms;
+    cursor: pointer;
+}
+
+.button_cancel:hover {
+    background-color: #2E3B66;
 }
