@@ -10,16 +10,25 @@ const ChangePassword = () => {
     const [currentPassword, setCurrentPassword] = useState('');
     const [password, setPassword] = useState('');
     const [confirmPassword, setConfirmPassword] = useState('');
-    const [errorMessage, setErrorMessage] = useState(['']);
+    const [errorMessage, setErrorMessage] = useState('');
+    const [loading, setLoading] = useState(false);
     const router = useRouter();
+
+    const validatePasswords = () => {
+        if (password !== confirmPassword) {
+            setErrorMessage('As senhas não coincidem.');
+            return false;
+        }
+        return true;
+    };
 
     const handleChangePassword = async (event: React.FormEvent<HTMLFormElement>) => {
         event.preventDefault();
 
-        if (password !== confirmPassword) {
-            setErrorMessage(['As senhas não coincidem.']);
-            return;
-        }
+        if (!validatePasswords()) return;
+
+        setLoading(true)
+        setErrorMessage('')
 
         try {
             const response = await fetch('/api/change-password', {
@@ -31,33 +40,26 @@ const ChangePassword = () => {
             });
 
             if (response.ok){
-                router.push('auth/signin')
+                window.location.href = 'auth/signin';
+
             } else {
                 const errorData = await response.json();
-
-                const errorMessages = Array.isArray(errorData.message) ? errorData.error : [errorData.error];
-                setErrorMessage(errorMessages || ['Falha ao alterar a senha.']);
+                console.log(errorData)
+                setErrorMessage(errorData.error || 'Falha ao alterar a senha.');
             }
         } catch (error) {
             console.error('Erro na requisição: ', error);
-            setErrorMessage(['Erro a atualizar o usuário. Tente novamente.']);
+            setErrorMessage('Erro ao atualizar o usuário. Tente novamente.');
+        } finally {
+            setLoading(false)
         }
     }
 
 
-    const handlePasswordChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-        setPassword(e.target.value);
-        if (errorMessage) setErrorMessage(['']);
-    };
-
-    const handleConfirmPasswordChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setConfirmPassword(e.target.value);
-    if (errorMessage) setErrorMessage(['']);
-    };
-
-    const handleCurrentPasswordChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setCurrentPassword(e.target.value);
-    if (errorMessage) setErrorMessage(['']);
+    const handleInputChange = (setter: React.Dispatch<React.SetStateAction<string>>) =>
+        (e: React.ChangeEvent<HTMLInputElement>) => {
+            setter(e.target.value);
+            if (errorMessage) setErrorMessage('');
     };
 
 
@@ -73,7 +75,7 @@ const ChangePassword = () => {
                         <InputPassword
                         password={currentPassword}
                         confirmPassword={confirmPassword}
-                        handlePasswordChange={handleCurrentPasswordChange}
+                        handlePasswordChange={handleInputChange(setCurrentPassword)}
                         isConfirmPassword = {false}
                         />
                     </div>
@@ -86,8 +88,7 @@ const ChangePassword = () => {
                         <InputPassword
                         password={password}
                         confirmPassword={confirmPassword}
-                        handlePasswordChange={handlePasswordChange}
-                        isConfirmPassword = {false}
+                        handlePasswordChange={handleInputChange(setPassword)}
                         />
                     </div>
 
@@ -97,17 +98,32 @@ const ChangePassword = () => {
                         <InputPassword
                         password={password}
                         confirmPassword={confirmPassword}
-                        handlePasswordChange={handleConfirmPasswordChange}
+                        handlePasswordChange={handleInputChange(setConfirmPassword)}
                         isConfirmPassword = {true}
                         />
                     </div>
                 </div>
                 <div style={{width: '99%' ,display: "flex", alignItems: "end", gap: "15px"}}>
-                    {errorMessage && errorMessage.map((error, index) => (
-                        <p style={{color: 'red', marginLeft: '1px', marginTop: '8px'}} key={index}>{error}</p>
-                    ))}
-                    <button type="button" onClick={handleCancelChanges} className={styles.button_cancel} >Cancelar</button>
-                    <button type="submit" style={{marginLeft: "0px"}} className={styles.button_save}>Salvar</button>
+                    {errorMessage && (
+                        <p style={{ color: 'red', marginLeft: '1px', marginTop: '8px' }}>{errorMessage}</p>
+                    )}
+
+                    <button
+                        type="button"
+                        onClick={handleCancelChanges}
+                        className={styles.button_cancel}
+                        disabled={loading}
+                        >
+                            Cancelar
+                    </button>
+
+                    <button
+                        type="submit"
+                        style={{marginLeft: "0px"}}
+                        className={styles.button_save}
+                        >
+                            {loading ? "Salvando..." : "Salvar"}
+                    </button>
                 </div>
             </form>
     )

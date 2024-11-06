@@ -43,24 +43,24 @@ const InfosUser = ({ access_token } : InfosUserProps) => {
         };
 
         fetchUserInfo();
-    }, [access_token, router])
+    }, [access_token])
+
+    const handleChange = (field: keyof UserInfo) => (e: React.ChangeEvent<HTMLInputElement>) => {
+        setUserInfo((prev) => ({ ...prev, [field]: e.target.value } as UserInfo));
+        setErrorMessage(['']);
+    };
 
 
-    const handleEditToggle = () => {
-        setIsEditing(!isEditing);
-    }
+    const handleEditToggle = () => setIsEditing(!isEditing);
 
 
     const handleSave = async () => {
+        setErrorMessage([''])
         try {
-            if (!userInfos || userInfos.sub === undefined || userInfos.username === undefined || userInfos.email === undefined) {
-                console.error("Dados do usuário inválidos");
-                return;
-            }
+            if (!userInfos) return;
 
             const { sub: id, username: name, email } = userInfos;
-            const userData = { id, name, email };
-            const updatedUserData = (email === originalEmail) ? { id, name } : userData;
+            const updatedUserData = email === originalEmail ? { id, name } : { id, name, email };
 
             const response = await fetch('api/update-user', {
                 method: 'PATCH',
@@ -75,18 +75,19 @@ const InfosUser = ({ access_token } : InfosUserProps) => {
                 window.location.href = '/auth/signin';
             } else {
                 const errorData = await response.json();
-
                 const errorMessages = Array.isArray(errorData.message) ? errorData.error : [errorData.error];
-                setErrorMessage(errorMessages || ['Falha na atualização.']);
+                setErrorMessage(errorMessages[0] || ['Falha na atualização.']);
             }
         } catch (error) {
             console.error('Erro na requisição: ', error);
-            setErrorMessage(['Erro a atualizar o usuário. Tente novamente.'])
+            setErrorMessage(['Erro a atualizar o usuário. Tente novamente.']);
         }
     }
 
+    const handleCancelChanges = () => window.location.href = '/profile';
+
     return (
-            <form method="POST">
+            <form method="POST" onSubmit={(e) => { e.preventDefault(); handleSave(); }}>
                 <div style={{display: "flex"}}>
                     <div className={styles.div_infos}>
                         <label htmlFor="username" className={styles.label_input}>Nome de usuário</label>
@@ -96,7 +97,7 @@ const InfosUser = ({ access_token } : InfosUserProps) => {
                         name="username"
                         disabled={!isEditing}
                         value={userInfos ? userInfos.username : ''}
-                        onChange={(e) => setUserInfo({ ...userInfos, username: e.target.value } as UserInfo)}
+                        onChange={handleChange('username')}
                         />
                     </div>
 
@@ -121,7 +122,7 @@ const InfosUser = ({ access_token } : InfosUserProps) => {
                         name="email"
                         disabled={!isEditing}
                         value={userInfos ? userInfos.email : ''}
-                        onChange={(e) => setUserInfo({ ...userInfos, email: e.target.value } as UserInfo)}
+                        onChange={handleChange('email')}
                         />
 
                         {errorMessage && errorMessage.map((error, index) => (
@@ -131,8 +132,8 @@ const InfosUser = ({ access_token } : InfosUserProps) => {
 
                     {isEditing ? (
                         <div style={{width: '99%' ,display: "flex", alignItems: "end", gap: "15px"}}>
-                        <button type="button" className={styles.button_cancel} >Cancelar</button>
-                        <button type="button" onClick={handleSave} style={{marginLeft: "0px"}} className={styles.button_save}>Salvar</button>
+                        <button type="button" onClick={handleCancelChanges} className={styles.button_cancel} >Cancelar</button>
+                        <button type="submit" style={{marginLeft: "0px"}} className={styles.button_save}>Salvar</button>
                         </div>
                     ) : (
                         <button type="button" onClick={handleEditToggle} className={styles.button_edit_infos}>Editar</button>
