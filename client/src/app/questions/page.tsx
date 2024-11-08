@@ -1,5 +1,6 @@
-import OneQuestion from "@/app/components/question/OneQuestion";
+
 import styles from "@/app/styles/Question.module.css"
+import AllQuestions from "../components/question/AllQuestions";
 
 const AllQuestionsPage = () => {
     return (
@@ -15,7 +16,7 @@ const AllQuestionsPage = () => {
                 </select>
             </div>
 
-            <OneQuestion/>
+            <AllQuestions/>
         </div>
 
     )
