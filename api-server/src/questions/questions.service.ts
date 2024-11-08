@@ -13,7 +13,7 @@ export class QuestionsService {
   constructor(private prisma: PrismaService) {}
 
   async getQuestions(): Promise<Question[]> {
-    const Allquestions = await this.prisma.questions.findMany({
+    const questions = await this.prisma.questions.findMany({
       select: {
         id: true,
         question: true,
@@ -29,10 +29,17 @@ export class QuestionsService {
           },
         },
       },
-    })
+    }).then((questions) => {
+      return questions.map((question) => ({
+        id: question.id,
+        question: question.question,
+        creation_date: question.creation_date,
+        category: question.categories.category,
+        name: question.users.name,
+      }));
+    });
 
-    return Allquestions;
-
+    return questions;
   }
 
   async createQuestion(
