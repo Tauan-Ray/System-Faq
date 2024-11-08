@@ -16,9 +16,6 @@ const AllQuestionsPage = () => {
             </div>
 
             <OneQuestion/>
-            <OneQuestion/>
-            <OneQuestion/>
-            <OneQuestion/>
         </div>
 
     )

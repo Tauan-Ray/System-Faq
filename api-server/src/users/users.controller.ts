@@ -24,7 +24,7 @@ import { ChangePasswordDto } from './dto/change-password.dto';
 export class UsersController {
   constructor(private readonly usersService: UsersService) {}
 
-  @UseGuards(AuthGuard('jwt'))
+  // @UseGuards(AuthGuard('jwt'))
   @Get()
   @ApiOperation({ summary: 'Lista todos os usuários do banco de dados.' })
   @CommonApiResponses()

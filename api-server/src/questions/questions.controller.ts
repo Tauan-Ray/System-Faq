@@ -20,7 +20,6 @@ import { AuthGuard } from '@nestjs/passport';
 
 @ApiTags('questions')
 @Controller('questions')
-@UseGuards(AuthGuard('jwt'))
 export class QuestionsController {
   constructor(private readonly questionsServices: QuestionsService) {}
 
@@ -32,6 +31,7 @@ export class QuestionsController {
   }
 
   @Post('create-question')
+  @UseGuards(AuthGuard('jwt'))
   @ApiOperation({ summary: 'Cria uma nova pergunta no banco de dados.' })
   @ApiResponse({ status: 201, description: 'Recurso criado com sucesso' })
   @CommonApiResponses()
@@ -46,6 +46,7 @@ export class QuestionsController {
   }
 
   @Patch('update-question/:id')
+  @UseGuards(AuthGuard('jwt'))
   @ApiOperation({ summary: 'Atualiza uma pergunta no banco de dados.' })
   @CommonApiResponses()
   async updateCategory(
@@ -61,6 +62,7 @@ export class QuestionsController {
   }
 
   @Delete('delete-question/:id')
+  @UseGuards(AuthGuard('jwt'))
   @ApiOperation({ summary: 'Apaga uma pergunta existente no banco de dados.' })
   @CommonApiResponses()
   async deleteQuestion(@Param('id', ParseIntPipe) id: number, @Request() req) {
