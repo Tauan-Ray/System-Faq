@@ -1,4 +1,7 @@
 export interface Response {
+  id: number,
   response: string;
-  question_id: number;
+  response_date: Date;
+  question_id?: number;
+  name?: string;
 }

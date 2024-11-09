@@ -20,22 +20,31 @@ import { AuthGuard } from '@nestjs/passport';
 
 @ApiTags('answers')
 @Controller('answers')
-@UseGuards(AuthGuard('jwt'))
 export class AnswersController {
   constructor(private readonly answersServices: AnswersService) {}
 
   @Get()
   @ApiOperation({ summary: 'Lista todas as respostas do banco de dados.' })
   @CommonApiResponses()
-  async getQuestions(): Promise<Response[]> {
+  async getAnswers(): Promise<Response[]> {
     return await this.answersServices.getResponse();
   }
 
+
+  @Get('/:id')
+  @ApiOperation({ summary: 'Lista todas as respostas de uma pergunta especifica.' })
+  @CommonApiResponses()
+  async getAnswersByQuestion(@Param('id', ParseIntPipe) question_id: number,): Promise<Response[]> {
+    return await this.answersServices.getAnswersByQuestion(question_id);
+  }
+
+
+  @UseGuards(AuthGuard('jwt'))
   @Post('create-response')
   @ApiOperation({ summary: 'Cria uma nova resposta no banco de dados.' })
   @ApiResponse({ status: 201, description: 'Recurso criado com sucesso' })
   @CommonApiResponses()
-  async createCategory(
+  async createResponse(
     @Body() createResponseDto: CreateResponseDto,
     @Request() req,
   ): Promise<Response> {
@@ -45,10 +54,11 @@ export class AnswersController {
     );
   }
 
+  @UseGuards(AuthGuard('jwt'))
   @Patch('update-response/:id')
   @ApiOperation({ summary: 'Atualiza uma resposta no banco de dados.' })
   @CommonApiResponses()
-  async updateCategory(
+  async updateResponse(
     @Param('id', ParseIntPipe) id: number,
     @Body() updateResponseDto: UpdateResponseDto,
     @Request() req,
@@ -60,6 +70,7 @@ export class AnswersController {
     );
   }
 
+  @UseGuards(AuthGuard('jwt'))
   @Delete('delete-response/:id')
   @ApiOperation({ summary: 'Apaga uma resposta existente no banco de dados.' })
   @CommonApiResponses()

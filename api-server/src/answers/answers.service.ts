@@ -16,6 +16,33 @@ export class AnswersService {
     return await this.prisma.answers.findMany();
   }
 
+  async getAnswersByQuestion(question_id: number): Promise<Response[]> {
+    const answers =  await this.prisma.answers.findMany({
+      where: {
+        question_id: question_id
+      },
+      select: {
+        id: true,
+        response: true,
+        response_date: true,
+        users: {
+          select: {
+            name: true,
+          }
+        }
+      }
+    }).then((answers) => {
+      return answers.map((response) => ({
+        id: response.id,
+        response: response.response,
+        response_date: response.response_date,
+        name: response.users.name,
+      }))
+    });
+
+    return answers;
+  }
+
   async createResponse(
     createResponseDto: CreateResponseDto,
     user_id_request: number,
