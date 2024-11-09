@@ -1,12 +1,6 @@
 import styles from "@/app/styles/Login.module.css"
 import { useState } from "react"
-
-interface InputPasswordProps {
-    isConfirmPassword?: boolean;
-    password: string;
-    confirmPassword?: string
-    handlePasswordChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
-}
+import { InputPasswordProps } from "../types/inputPasswordTypes"
 
 const InputPassword: React.FC<InputPasswordProps> = ({
       isConfirmPassword,

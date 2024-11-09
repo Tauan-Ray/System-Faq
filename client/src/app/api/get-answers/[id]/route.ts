@@ -1,23 +1,25 @@
 import { NextResponse } from "next/server";
 
-export async function GET() {
+export async function GET(req: Request, { params }: { params: { id: string } }) {
+    const { id } = params;
+    const questionId = parseInt(id);
+
     try {
-        const response =  await fetch('http://localhost:3000/questions', {
+        const response = await fetch(`http://localhost:3000/answers/${questionId}`, {
             method: 'GET',
             headers: {
-            'Accept': 'application/json'
-            }
+                'Accept': 'application/json'
+            },
         });
 
         if (response.ok) {
-            const questions = await response.json();
-            console.log(questions)
+            const answers  = await response.json()
             return NextResponse.json({
-                message: 'Perguntas retornadas com sucesso.',
-                questions: questions,
+                message: 'Repostas encontrada com sucesso.',
+                answers: answers,
             })
         } else {
-             const errorData = await response.json();
+            const errorData = await response.json();
             return NextResponse.json(
                 { error: errorData.message },
                 { status: 400 }
@@ -30,4 +32,5 @@ export async function GET() {
             { status: 500 }
         )
     }
+
 }

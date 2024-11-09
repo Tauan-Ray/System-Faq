@@ -1,15 +1,8 @@
 "use client"
 
 import styles from "@/app/styles/Question.module.css"
-
-interface infosQuestions {
-    id: number;
-    name: string;
-    question: string;
-    category: string;
-    description: string;
-    creation_date: string;
-}
+import { useRouter } from "next/navigation";
+import { infosQuestions } from "../types/infosQuestionsTypes";
 
 
 const OneQuestion = ({
@@ -18,10 +11,23 @@ const OneQuestion = ({
     creation_date,
     question,
     category,
+    canClick,
     description }: infosQuestions) => {
+
+    const router = useRouter();
+
+    const handleEnterQuestion = (id: number) => {
+        const url = `questions/${id}`;
+        router.push(url);
+    };
+
     return (
         <div>
-            <div key={id} className={styles.area_question}>
+            <div key={id} className={styles.area_question} onClick={(event) => {
+                if (canClick) {
+                    handleEnterQuestion(id)
+                }
+            }}>
                 <div className={styles.header_question}>
                     <p>{name}</p>
                     <p>Pergunta feita em: {new Date(creation_date).toLocaleDateString('pt-BR')}</p>

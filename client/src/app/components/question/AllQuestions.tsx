@@ -2,15 +2,7 @@
 
 import { useEffect, useState } from "react";
 import OneQuestion from "./OneQuestion";
-
-interface infosQuestions {
-    id: number;
-    question: string;
-    category: string;
-    description: string;
-    creation_date: string;
-    name: string;
-}
+import { infosQuestions } from "../types/infosQuestionsTypes";
 
 const AllQuestions = () => {
     const [infosQuestion, setInfosQuestion] = useState<infosQuestions[] | null>([]);
@@ -18,7 +10,7 @@ const AllQuestions = () => {
 
     const getInfosQuestion = async () => {
         try {
-            const response = await fetch('/api/getQuestions/', {
+            const response = await fetch('/api/get-questions/', {
                 method: 'GET',
                 headers: {
                     'Accept': 'application/json'
@@ -54,6 +46,7 @@ const AllQuestions = () => {
                         <OneQuestion
                             key={question.id}
                             {...question}
+                            canClick={true}
                         />
                     ))
                 ) : (

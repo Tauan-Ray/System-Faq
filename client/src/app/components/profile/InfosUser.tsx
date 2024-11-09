@@ -3,17 +3,10 @@
 import styles from "@/app/styles/Profile.module.css"
 import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation"
+import { UserInfo } from "../types/userInfoTypes";
 
 interface InfosUserProps {
     access_token: string;
-}
-
-interface UserInfo {
-    sub: number;
-    email: string;
-    username: string;
-    iat: number;
-    exp: number;
 }
 
 const InfosUser = ({ access_token } : InfosUserProps) => {
