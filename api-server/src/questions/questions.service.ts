@@ -17,6 +17,7 @@ export class QuestionsService {
       select: {
         id: true,
         question: true,
+        description: true,
         creation_date: true,
         users: {
           select: {
@@ -33,6 +34,7 @@ export class QuestionsService {
       return questions.map((question) => ({
         id: question.id,
         question: question.question,
+        description: question.description,
         creation_date: question.creation_date,
         category: question.categories.category,
         name: question.users.name,
@@ -40,6 +42,39 @@ export class QuestionsService {
     });
 
     return questions;
+  }
+
+
+  async getQuestionsById(id: number): Promise<Question> {
+    const questionUnique = await this.prisma.questions.findUnique({
+      where: { id },
+      select: {
+        id: true,
+        question: true,
+        description: true,
+        creation_date: true,
+        users: {
+          select: {
+            name: true,
+          },
+        },
+        categories: {
+          select: {
+            category: true,
+          },
+        },
+      },
+    });
+
+
+    return {
+      id: questionUnique.id,
+      description: questionUnique.description,
+      question: questionUnique.question,
+      creation_date: questionUnique.creation_date,
+      category: questionUnique.categories.category,
+      name: questionUnique.users.name
+    }
   }
 
   async createQuestion(
@@ -52,6 +87,7 @@ export class QuestionsService {
           question: createQuestionDto.question,
           user_id: user_id_request,
           category_id: createQuestionDto.category_id,
+          description: createQuestionDto.description,
         },
       });
       return newQuestion;
@@ -89,6 +125,7 @@ export class QuestionsService {
         where: { id },
         data: {
           question: updateQuestionDto.question,
+          description: updateQuestionDto.description,
           category_id: updateQuestionDto.category_id,
         },
       });

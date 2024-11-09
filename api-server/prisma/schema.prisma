@@ -30,8 +30,9 @@ model categories {
 
 model questions {
   id            Int        @id @default(autoincrement())
-  question      String     @db.VarChar(100)
+  question      String     @db.VarChar(60)
   creation_date DateTime   @default(now()) @db.Timestamp(0)
+  description   String     @db.VarChar(255)
   user_id       Int
   category_id   Int
   users         users      @relation(fields: [user_id], references: [id])

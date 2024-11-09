@@ -30,6 +30,13 @@ export class QuestionsController {
     return await this.questionsServices.getQuestions();
   }
 
+  @Get('/:id')
+  @ApiOperation({ summary: 'Lista pergunta especifica pelo ID da pergunta' })
+  @CommonApiResponses()
+  async getQuestionsById(@Param('id', ParseIntPipe) id: number): Promise<Question> {
+    return await this.questionsServices.getQuestionsById(id);
+  }
+
   @Post('create-question')
   @UseGuards(AuthGuard('jwt'))
   @ApiOperation({ summary: 'Cria uma nova pergunta no banco de dados.' })
