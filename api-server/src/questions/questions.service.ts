@@ -58,6 +58,11 @@ export class QuestionsService {
             name: true,
           },
         },
+        answers: {
+          select: {
+            id: true,
+          },
+        },
         categories: {
           select: {
             category: true,
@@ -66,6 +71,7 @@ export class QuestionsService {
       },
     });
 
+    const totalAnswers = questionUnique?.answers.length || 0;
 
     return {
       id: questionUnique.id,
@@ -73,8 +79,45 @@ export class QuestionsService {
       question: questionUnique.question,
       creation_date: questionUnique.creation_date,
       category: questionUnique.categories.category,
-      name: questionUnique.users.name
+      name: questionUnique.users.name,
+      quantity_answers: totalAnswers
     }
+  }
+
+
+  async getQuestionsByUserId(userId: number): Promise<Question[]> {
+    const questions = await this.prisma.questions.findMany({
+      where: {
+        user_id: userId
+      },
+      select: {
+        id: true,
+        question: true,
+        description: true,
+        creation_date: true,
+        users: {
+          select: {
+            name: true,
+          },
+        },
+        categories: {
+          select: {
+            category: true,
+          },
+        },
+      },
+    }).then((questions) => {
+      return questions.map((question) => ({
+        id: question.id,
+        question: question.question,
+        description: question.description,
+        creation_date: question.creation_date,
+        category: question.categories.category,
+        name: question.users.name,
+      }));
+    });
+
+    return questions;
   }
 
   async createQuestion(

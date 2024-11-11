@@ -17,7 +17,7 @@ const InsideQuestionPage = () => {
     useEffect(() => {
         const getQuestion = async () => {
             try {
-                const response = await fetch(`/api/search-question/${id}`, {
+                const response = await fetch(`/api/questions/search-question/${id}`, {
                     method: 'GET',
                     headers: {
                         'Accept': 'application/json'
@@ -54,7 +54,7 @@ const InsideQuestionPage = () => {
                 />
             )}
             <div className={styles.area_response}>
-                <p>Respostas (2)</p>
+                <p>Respostas ({infosQuestion?.quantity_answers})</p>
                     <AllAnswers
                         id_question={id}
                     />

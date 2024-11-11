@@ -7,6 +7,7 @@ import {
   ParseIntPipe,
   Patch,
   Post,
+  Query,
   Request,
   UseGuards,
 } from '@nestjs/common';
@@ -23,19 +24,33 @@ import { AuthGuard } from '@nestjs/passport';
 export class QuestionsController {
   constructor(private readonly questionsServices: QuestionsService) {}
 
-  @Get()
+  @Get('all')
   @ApiOperation({ summary: 'Lista todas as perguntas do banco de dados.' })
   @CommonApiResponses()
   async getQuestions(): Promise<Question[]> {
     return await this.questionsServices.getQuestions();
   }
 
-  @Get('/:id')
-  @ApiOperation({ summary: 'Lista pergunta especifica pelo ID da pergunta' })
+  @Get()
+  @ApiOperation({ summary: 'Lista perguntas por meio do Id ou do IdUser' })
   @CommonApiResponses()
-  async getQuestionsById(@Param('id', ParseIntPipe) id: number): Promise<Question> {
-    return await this.questionsServices.getQuestionsById(id);
+  async getQuestionsByIdOrUser(
+    @Query('id') id?: string,
+    @Query('userId') userId?: string
+  ): Promise<Question | Question[]> {
+
+    const Questionsid = parseInt(id, 10);
+    const user_id = parseInt(userId, 10);
+
+    if (id) {
+      return this.questionsServices.getQuestionsById(Questionsid);
+    } else if (userId) {
+      return this.questionsServices.getQuestionsByUserId(user_id);
+    } else {
+      throw new Error('Você deve fornecer "ID" ou "UserId" como par')
+    }
   }
+
 
   @Post('create-question')
   @UseGuards(AuthGuard('jwt'))

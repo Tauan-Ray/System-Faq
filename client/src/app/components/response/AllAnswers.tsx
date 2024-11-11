@@ -15,7 +15,7 @@ const AllAnswers = ({ id_question }: AllAnswersProps) => {
     useEffect(() => {
         const getAnswers = async () => {
             try {
-                const response = await fetch(`/api/get-answers/${id_question}`, {
+                const response = await fetch(`/api/answers/get-answers/${id_question}`, {
                     method: 'GET',
                     headers: {
                         'Accept': 'application/json'

@@ -153,3 +153,11 @@
 .button_cancel:hover {
     background-color: #2E3B66;
 }
+
+.text_questions {
+    margin-top: 20px;
+    text-align: center;
+    font-size: 36px;
+    font-weight: 500;
+    font-family: "JetBrains Mono", monospace;
+}

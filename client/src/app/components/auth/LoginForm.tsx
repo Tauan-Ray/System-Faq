@@ -3,6 +3,7 @@
 import { useState } from 'react';
 import styles from '@/app/styles/Login.module.css'
 import InputPassword from './InputPassword';
+import Link from 'next/link';
 
 const LoginForm = () => {
   const [email, setEmail] = useState('');
@@ -13,7 +14,7 @@ const LoginForm = () => {
     event.preventDefault();
 
     try {
-      const response = await fetch('/api/login', {
+      const response = await fetch('/api/user/login', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -68,7 +69,9 @@ const LoginForm = () => {
         </div>
 
         <p className={styles.text_to_sign}>Não tem uma conta?
-        <a href="" className={styles.link_to_sign}>Crie agora!</a>
+          <Link href="/auth/signup" className={styles.link_to_sign}>
+              Crie Agora!
+          </Link>
         </p>
 
         {errorMessage && errorMessage.map((error, index) => (

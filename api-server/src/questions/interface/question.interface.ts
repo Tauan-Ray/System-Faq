@@ -7,4 +7,5 @@ export interface Question {
   creation_date: Date;
   name?: string,
   category?: string
+  quantity_answers?: number;
 }

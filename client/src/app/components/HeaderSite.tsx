@@ -24,7 +24,7 @@ const HeaderSite = ({ access_token }: HeaderSiteProps) => {
 
     const handleLogout = async () => {
         try {
-            const response = await fetch('api/logout', {
+            const response = await fetch('/api/user/logout', {
                 method: "POST",
                 credentials: 'include',
             });

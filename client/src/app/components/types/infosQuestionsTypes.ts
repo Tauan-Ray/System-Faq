@@ -6,4 +6,5 @@ export interface infosQuestions {
     creation_date: string;
     name: string;
     canClick: boolean;
+    quantity_answers?: number;
 }

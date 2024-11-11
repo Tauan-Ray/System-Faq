@@ -10,7 +10,7 @@ const AllQuestions = () => {
 
     const getInfosQuestion = async () => {
         try {
-            const response = await fetch('/api/get-questions/', {
+            const response = await fetch('/api/questions/get-questions/', {
                 method: 'GET',
                 headers: {
                     'Accept': 'application/json'

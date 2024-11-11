@@ -31,7 +31,7 @@ const ChangePassword = () => {
         setErrorMessage('')
 
         try {
-            const response = await fetch('/api/change-password', {
+            const response = await fetch('/api/user/change-password', {
                 method: "PATCH",
                 headers: {
                     "Content-Type": "application/json",

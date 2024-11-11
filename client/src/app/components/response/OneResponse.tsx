@@ -11,7 +11,7 @@ const OneResponse = ({
         <div className={styles.individual_response} key={id}>
             <div className={styles.header_response}>
                 <p>{name}</p>
-                <p>Pergunta feita em: {new Date(response_date).toLocaleDateString('pt-BR')}</p>
+                <p>Respondida em: {new Date(response_date).toLocaleDateString('pt-BR')}</p>
             </div>
             <div className={styles.content_response}>
                 <p className={styles.response}>{response}</p>

@@ -43,7 +43,7 @@ const InfosUser = ({ access_token } : InfosUserProps) => {
         setErrorMessage(['']);
     };
 
-
+    
     const handleEditToggle = () => setIsEditing(!isEditing);
 
 

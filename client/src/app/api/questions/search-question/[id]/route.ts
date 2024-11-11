@@ -2,10 +2,9 @@ import { NextResponse } from "next/server";
 
 export async function GET(req: Request, { params }: { params: { id: string } }) {
     const { id } = params;
-    const questionId = parseInt(id);
 
     try {
-        const response = await fetch(`http://localhost:3000/questions/${questionId}`, {
+        const response = await fetch(`http://localhost:3000/questions?id=${id}`, {
             method: 'GET',
             headers: {
                 'Accept': 'application/json'

@@ -2,7 +2,7 @@ import { NextResponse } from "next/server";
 
 export async function GET() {
     try {
-        const response =  await fetch('http://localhost:3000/questions', {
+        const response =  await fetch('http://localhost:3000/questions/all', {
             method: 'GET',
             headers: {
             'Accept': 'application/json'
