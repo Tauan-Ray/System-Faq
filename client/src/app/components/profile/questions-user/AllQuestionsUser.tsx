@@ -1,6 +1,6 @@
 "use client"
 
-import { useState, useEffect } from "react";
+import { useState, useEffect, useCallback } from "react";
 import { UserInfo } from "../../types/userInfoTypes";
 import { infosQuestions } from "../../types/infosQuestionsTypes";
 import OnequestionUser from "./OneQuestionUser";
@@ -33,40 +33,46 @@ const AllQuestionsUser = ({ access_token }: InfosUserProps) => {
             }
         };
         fetchUserInfo();
-    }, [access_token])
+    }, [access_token]);
 
-    useEffect(() => {
-        const getQuestionsUser = async () => {
-            if (!userInfos?.sub) {
-                return;
-            }
-
-            try {
-                const idUser = String(userInfos?.sub);
-                const response = await fetch(`/api/questions/user-questions/${idUser}`, {
-                    method: 'GET',
-                    headers: {
-                        'Accept': 'application/json'
-                    },
-                });
-
-                if (response.ok) {
-                    const data = await response.json();
-                    setInfosQuestion(data.question || [])
-                } else {
-                    setErrorMessage("Erro ao buscar as perguntas. Tente novamente mais tarde.");
-                    console.error('Erro ao buscar as perguntas:', response.statusText);
-                    return null
-                }
-            } catch (error) {
-                setErrorMessage("Erro de rede. Verifique sua conexão e tente novamente.");
-                console.error("Erro na requisição:", error);
-            }
+    const fetchQuestionsUser = useCallback(async () => {
+        if (!userInfos?.sub) {
+            return;
         }
 
-        getQuestionsUser();
-    }, [userInfos])
+        try {
+            const idUser = String(userInfos?.sub);
+            const response = await fetch(`/api/questions/user-questions/${idUser}`, {
+                method: 'GET',
+                headers: {
+                    'Accept': 'application/json'
+                },
+            });
 
+            if (response.ok) {
+                const data = await response.json();
+                setInfosQuestion(data.question || [])
+            } else {
+                setErrorMessage("Erro ao buscar as perguntas. Tente novamente mais tarde.");
+                console.error('Erro ao buscar as perguntas:', response.statusText);
+                return null
+            }
+        } catch (error) {
+            setErrorMessage("Erro de rede. Verifique sua conexão e tente novamente.");
+            console.error("Erro na requisição:", error);
+        }
+    }, [userInfos]);
+
+    useEffect(() => {
+        fetchQuestionsUser();
+    }, [userInfos, fetchQuestionsUser]);
+
+
+    const handleDeleteSuccess = (deletedQuestionId: number) => {
+        setInfosQuestion((prevQuestions) =>
+            prevQuestions ? prevQuestions.filter(question => question.id !== deletedQuestionId) : []
+        );
+    }
 
 
     return (
@@ -80,6 +86,7 @@ const AllQuestionsUser = ({ access_token }: InfosUserProps) => {
                         <OnequestionUser
                             key={question.id}
                             {...question}
+                            onDeleteSuccess={handleDeleteSuccess}
                         />
                     ))
                 ) : (

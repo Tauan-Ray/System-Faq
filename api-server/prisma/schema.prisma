@@ -46,6 +46,6 @@ model answers {
   response_date DateTime  @default(now()) @db.Timestamp(0)
   question_id   Int
   user_id       Int
-  questions     questions @relation(fields: [question_id], references: [id])
+  questions     questions @relation(fields: [question_id], references: [id], onDelete: Cascade)
   users         users     @relation(fields: [user_id], references: [id])
 }

@@ -30,6 +30,9 @@ export class QuestionsService {
           },
         },
       },
+      orderBy: {
+        creation_date: 'desc',
+      }
     }).then((questions) => {
       return questions.map((question) => ({
         id: question.id,
@@ -106,6 +109,9 @@ export class QuestionsService {
           },
         },
       },
+      orderBy: {
+        creation_date: 'desc',
+      }
     }).then((questions) => {
       return questions.map((question) => ({
         id: question.id,

@@ -3,7 +3,7 @@ import { getAuthHeaders } from "@/app/utils/getAuthHeaders";
 
 export async function PATCH (req: Request) {
     try {
-        const headers = getAuthHeaders();
+        const headers = getAuthHeaders(true);
         const user = await req.json()
 
         if (!user || !user.id || !user.name) {

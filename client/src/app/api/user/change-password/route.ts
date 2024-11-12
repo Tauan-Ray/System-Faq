@@ -3,7 +3,7 @@ import { NextResponse } from "next/server";
 
 export async function PATCH (req: Request) {
     try {
-        const headers = getAuthHeaders();
+        const headers = getAuthHeaders(true);
         const { password, currentPassword } = await req.json();
 
         const response  = await fetch('http://localhost:3000/users/update-user/change-password', {

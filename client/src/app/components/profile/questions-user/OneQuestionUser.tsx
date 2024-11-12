@@ -8,12 +8,42 @@ const OnequestionUser = ({
     question,
     category,
     description,
-    creation_date
-}: infosQuestions) => {
+    creation_date,
+    onDeleteSuccess
+}: infosQuestions & { onDeleteSuccess: (id: number) => void }) => {
     const router = useRouter();
 
     const handleEnterQuestion = () => {
         router.push(`/questions/${id}`)
+    }
+
+    const handleDeleteQuestion = async () => {
+        const confirmDelete = confirm('Tem certeza que deseja deletar a pergunta?')
+
+        if (!confirmDelete) {
+            return
+        }
+
+        try {
+            const response = await fetch(`api/questions/delete-question/${id}`, {
+                method: 'DELETE',
+                headers: {
+                    'Accept': 'application/json'
+                },
+            });
+
+            if (response.ok) {
+                const messageSuccess = await response.json();
+                alert(messageSuccess.message.message);
+                onDeleteSuccess(id);
+            } else {
+                const erro = await response.json();
+                alert(`Erro ao deletar pergunta: ${erro.error}`);
+            }
+        } catch (error) {
+            alert("Ocorreu um erro ao tentar deletar a pergunta.");
+            console.error('Erro', error);
+        }
     }
 
     return (
@@ -30,7 +60,7 @@ const OnequestionUser = ({
                     <div className={styles.area_buttons}>
                         <button onClick={handleEnterQuestion} className={styles.button_view_questions} type="button">Ver</button>
                         <button className={styles.button_update_questions} type="button">Editar</button>
-                        <button className={styles.button_delete_questions} type="button">Deletar</button>
+                        <button onClick={handleDeleteQuestion} className={styles.button_delete_questions} type="button">Deletar</button>
                     </div>
                 </div>
             </div>
