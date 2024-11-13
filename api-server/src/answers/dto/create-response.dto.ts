@@ -4,7 +4,6 @@ import { ApiProperty } from '@nestjs/swagger';
 export class CreateResponseDto {
   @IsString({ message: 'A resposta não pode ser um número.' })
   @IsNotEmpty({ message: 'A resposta não pode ser uma string vazia.' })
-  @Length(3, 300, { message: 'A resposta deve ter no máximo 300 caracteres' })
   @ApiProperty({
     example: 'Basta ir no endpoint de perguntas para o metódo POST.',
     description: 'Texto da resposta.',

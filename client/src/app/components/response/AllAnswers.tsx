@@ -20,6 +20,7 @@ const AllAnswers = ({ id_question }: AllAnswersProps) => {
                     headers: {
                         'Accept': 'application/json'
                     },
+                    next: { revalidate: 10 }
                 });
 
                 if (response.ok) {

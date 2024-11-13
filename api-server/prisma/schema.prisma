@@ -42,7 +42,7 @@ model questions {
 
 model answers {
   id            Int       @id @default(autoincrement())
-  response      String    @db.VarChar(300)
+  response      String    @db.Text
   response_date DateTime  @default(now()) @db.Timestamp(0)
   question_id   Int
   user_id       Int

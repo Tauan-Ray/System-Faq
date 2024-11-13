@@ -1,0 +1,27 @@
+.area_box_response {
+  margin: 0px auto;
+  width: 897px;
+  height: 150px;
+  margin-bottom: 160px;
+}
+
+.area_box_response > p {
+  font-family: 'JetBrains Mono', monospace;
+  margin-bottom: 10px;
+  font-size: 17px;
+  font-weight: 500;
+}
+
+.button_send {
+  margin-top: 60px;
+  height: 40px;
+  width: 160px;
+  border-radius: 8px;
+  background-color: #53ADDA;
+  color: white;
+  font-size: 15px;
+  font-family: 'Poppins', sans-serif;
+  font-weight: bold;
+  border: none;
+  cursor: pointer;
+}

@@ -9,6 +9,7 @@ export async function GET(req: Request, { params }: { params: { id: string } }) 
             headers: {
                 'Accept': 'application/json'
             },
+            next: { revalidate: 10 },
         });
 
         if (response.ok) {

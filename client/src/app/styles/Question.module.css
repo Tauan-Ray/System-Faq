@@ -33,14 +33,13 @@
 }
 
 .area_question {
-    margin: 42px auto;
+    margin: 20px auto;
     width: 897px;
     border: 1px solid #808080;
     border-radius: 8px;
     padding: 25px;
     padding-bottom: 10px;
     transition: border 300ms;
-    cursor: pointer;
 }
 
 .area_question:hover {

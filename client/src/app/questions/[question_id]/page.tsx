@@ -12,7 +12,7 @@ const InsideQuestionPage = () => {
     const [infosQuestion, setInfosQuestion] = useState<infosQuestions | null>(null);
     const [errorMessage, setErrorMessage] = useState('');
     const { question_id } = useParams();
-    const id = parseInt(question_id[0])
+    const id = Array.isArray(question_id) ? parseInt(question_id[0]) : parseInt(question_id);
 
     useEffect(() => {
         const getQuestion = async () => {
@@ -22,6 +22,7 @@ const InsideQuestionPage = () => {
                     headers: {
                         'Accept': 'application/json'
                     },
+                    next: { revalidate: 10 }
                 });
 
                 if (response.ok) {
@@ -50,7 +51,7 @@ const InsideQuestionPage = () => {
                     category={infosQuestion.category}
                     description={infosQuestion.description}
                     creation_date={infosQuestion.creation_date}
-                    canClick={false}
+                    see={false}
                 />
             )}
             <div className={styles.area_response}>

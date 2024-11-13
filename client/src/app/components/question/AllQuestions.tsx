@@ -15,6 +15,7 @@ const AllQuestions = () => {
                 headers: {
                     'Accept': 'application/json'
                 },
+                next: { revalidate: 10 }
             });
 
             if (response.ok) {
@@ -46,7 +47,7 @@ const AllQuestions = () => {
                         <OneQuestion
                             key={question.id}
                             {...question}
-                            canClick={true}
+                            see={true}
                         />
                     ))
                 ) : (

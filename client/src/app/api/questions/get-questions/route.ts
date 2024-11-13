@@ -6,7 +6,8 @@ export async function GET() {
             method: 'GET',
             headers: {
             'Accept': 'application/json'
-            }
+            },
+            next: { revalidate: 10 }
         });
 
         if (response.ok) {

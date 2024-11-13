@@ -14,7 +14,7 @@ const OneResponse = ({
                 <p>Respondida em: {new Date(response_date).toLocaleDateString('pt-BR')}</p>
             </div>
             <div className={styles.content_response}>
-                <p className={styles.response}>{response}</p>
+            <p className={styles.response} dangerouslySetInnerHTML={{ __html: response }} />
             </div>
         </div>
     )
