@@ -2,7 +2,7 @@
 
 import styles from "@/app/styles/Profile.module.css"
 import InputPassword from "../auth/InputPassword";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
 
 
@@ -12,7 +12,34 @@ const ChangePassword = () => {
     const [confirmPassword, setConfirmPassword] = useState('');
     const [errorMessage, setErrorMessage] = useState('');
     const [loading, setLoading] = useState(false);
+    const [isAuthenticated, setIsAuthenticated] = useState<boolean | null>(null);
     const router = useRouter();
+
+    useEffect(() => {
+        const checkAuthentication = async () => {
+            const response = await fetch('/api/check-auth', {
+                method: 'GET',
+                credentials: 'include',
+            });
+
+            if (response.ok) {
+                const authenticated = await response.json()
+                console.log(authenticated.message)
+                setIsAuthenticated(authenticated.state);
+            } else {
+                console.error('Erro ao verificar login')
+            }
+        }
+
+        checkAuthentication();
+    }, [])
+
+    useEffect(() =>{
+        if (isAuthenticated === false) {
+            router.push('/auth/signin');
+        }
+    },[isAuthenticated, router])
+
 
     const validatePasswords = () => {
         if (password !== confirmPassword) {

@@ -14,36 +14,60 @@ const InfosUser = ({ access_token } : InfosUserProps) => {
     const [isEditing, setIsEditing] = useState(false);
     const [originalEmail, setOriginalEmail] = useState<string | null>(null);
     const [errorMessage, setErrorMessage] = useState(['']);
+    const [isAuthenticated, setIsAuthenticated] = useState<boolean | null>(null);
     const router = useRouter();
 
     useEffect(() => {
-        const fetchUserInfo = async () => {
-            const response = await fetch('/api/decode-token', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                },
-                body: JSON.stringify({ access_token: access_token }),
+        const checkAuthentication = async () => {
+            const response = await fetch('/api/check-auth', {
+                method: 'GET',
+                credentials: 'include',
             });
 
             if (response.ok) {
-                const data = await response.json();
-                setUserInfo(data);
-                setOriginalEmail(data.email);
+                const authenticated = await response.json()
+                console.log(authenticated.message)
+                setIsAuthenticated(authenticated.state);
             } else {
-                console.error('Erro ao decodificar o token:', response.statusText)
+                console.error('Erro ao verificar login')
             }
-        };
+        }
 
-        fetchUserInfo();
-    }, [access_token])
+        checkAuthentication();
+    }, [])
+
+    useEffect(() => {
+        if (isAuthenticated === true) {
+            const fetchUserInfo = async () => {
+                const response = await fetch('/api/decode-token', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({ access_token: access_token }),
+                });
+
+                if (response.ok) {
+                    const data = await response.json();
+                    setUserInfo(data);
+                    setOriginalEmail(data.email);
+                } else {
+                    console.error('Erro ao decodificar o token:', response.statusText)
+                }
+            };
+
+            fetchUserInfo();
+        } else if (isAuthenticated === false) {
+            router.push('/auth/signin');
+        }
+    }, [access_token, isAuthenticated, router])
 
     const handleChange = (field: keyof UserInfo) => (e: React.ChangeEvent<HTMLInputElement>) => {
         setUserInfo((prev) => ({ ...prev, [field]: e.target.value } as UserInfo));
         setErrorMessage(['']);
     };
 
-    
+
     const handleEditToggle = () => setIsEditing(!isEditing);
 
 

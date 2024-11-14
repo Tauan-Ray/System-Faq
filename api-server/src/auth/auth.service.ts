@@ -51,7 +51,8 @@ export class AuthService {
       const payload = this.jwtService.verify(refreshToken);
       const newAccessToken = this.jwtService.sign({
         email: payload.email,
-        sub: payload.id,
+        sub: payload.sub,
+        username: payload.username,
       });
       return {
         access_token: newAccessToken,

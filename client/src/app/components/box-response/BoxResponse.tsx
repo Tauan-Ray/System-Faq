@@ -22,8 +22,9 @@ const BoxResponse = ({ id_question }: BoxResponseProps) => {
       });
 
       if (response.ok) {
-          const authenticated = (await response.json()).state
-          setIsAuthenticated(authenticated);
+          const authenticated = await response.json()
+          console.log(authenticated.message)
+          setIsAuthenticated(authenticated.state);
       } else {
           console.error('Erro ao verificar login')
       }
