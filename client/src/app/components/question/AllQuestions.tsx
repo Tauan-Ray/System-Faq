@@ -4,7 +4,7 @@ import { useEffect, useState } from "react";
 import OneQuestion from "./OneQuestion";
 import { infosQuestions } from "../types/infosQuestionsTypes";
 
-const AllQuestions = () => {
+const AllQuestions = ({ selectedCategory }: { selectedCategory: number }) => {
     const [infosQuestion, setInfosQuestion] = useState<infosQuestions[] | null>([]);
     const [errorMessage, setErrorMessage] = useState('');
 
@@ -36,14 +36,17 @@ const AllQuestions = () => {
         getInfosQuestion();
     },[]);
 
+    const filteredQuestions = selectedCategory === 0
+        ? infosQuestion
+        : infosQuestion?.filter(question => question.category_id === selectedCategory)
 
     return (
         <div>
             {errorMessage ? (
                 <p>{errorMessage}</p>
             ) : (
-                infosQuestion ? (
-                    infosQuestion.map((question) => (
+                filteredQuestions ? (
+                    filteredQuestions.map((question) => (
                         <OneQuestion
                             key={question.id}
                             {...question}

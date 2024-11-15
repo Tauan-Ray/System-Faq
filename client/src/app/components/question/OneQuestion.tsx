@@ -38,7 +38,7 @@ const OneQuestion = ({
                 <div className={styles.content_question}>
                     <h2 className={styles.title_question}>{question}</h2>
                     <p className={styles.category_question}>Categoria: {category}</p>
-                    <p className={styles.description_question}>{description}</p>
+                    <p className={styles.description_question} dangerouslySetInnerHTML={{ __html: description }} />
                     <button
                     className={styles.button_respond_questions}
                     type="button" onClick={(event) => {

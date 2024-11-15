@@ -56,7 +56,7 @@ const OnequestionUser = ({
                 <div className={styles.content_question}>
                     <h2 className={styles.title_question}>{question}</h2>
                     <p className={styles.category_question}>Categoria: {category}</p>
-                    <p className={styles.description_question}>{description}</p>
+                    <p className={styles.description_question} dangerouslySetInnerHTML={{ __html: description }} />
                     <div className={styles.area_buttons}>
                         <button onClick={handleEnterQuestion} className={styles.button_view_questions} type="button">Ver</button>
                         <button className={styles.button_update_questions} type="button">Editar</button>

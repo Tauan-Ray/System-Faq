@@ -19,6 +19,7 @@ export class QuestionsService {
         question: true,
         description: true,
         creation_date: true,
+        category_id: true,
         users: {
           select: {
             name: true,
@@ -40,6 +41,7 @@ export class QuestionsService {
         description: question.description,
         creation_date: question.creation_date,
         category: question.categories.category,
+        category_id: question.category_id,
         name: question.users.name,
       }));
     });

@@ -1,22 +1,26 @@
+"use client"
 
 import styles from "@/app/styles/Question.module.css"
 import AllQuestions from "../components/question/AllQuestions";
+import SelectCategory from "../components/question/SelectCategory";
+import { useState } from 'react'
+
 
 const AllQuestionsPage = () => {
+    const [selectedCategory, setSelectedCategory] = useState<number>(0);
+
+    const handleCategoryChange = (categoryId: number) => {
+        setSelectedCategory(categoryId);
+    };
+
     return (
         <div className={styles.area_questions}>
             <div className={styles.area_category}>
                 <p>Classificar por: </p>
-                <select name="category" className={styles.select_category}>
-                    <option className={styles.option_category} value="nenhuma">Nenhuma</option>
-                    <option className={styles.option_category} value="prazo de entrega">Prazo de entrega</option>
-                    <option className={styles.option_category} value="duvidas sobre pedidos">Dúvidas sobre pedidos</option>
-                    <option className={styles.option_category} value="metodos de pagamento">Metódos de pagamento</option>
-                    <option className={styles.option_category} value="problemas tecnicos">Problemas técnicos</option>
-                </select>
+                <SelectCategory onCategoryChange={handleCategoryChange}/>
             </div>
 
-            <AllQuestions/>
+            <AllQuestions selectedCategory={selectedCategory}/>
         </div>
 
     )

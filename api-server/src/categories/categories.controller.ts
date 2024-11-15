@@ -18,7 +18,6 @@ import { AuthGuard } from '@nestjs/passport';
 import { RolesGuard } from './guards/roles.guard';
 @ApiTags('categories')
 @Controller('categories')
-@UseGuards(AuthGuard('jwt'), RolesGuard)
 export class CategoriesController {
   constructor(private readonly categoriesServices: CategoriesService) {}
 
@@ -29,6 +28,7 @@ export class CategoriesController {
     return await this.categoriesServices.getCategories();
   }
 
+  @UseGuards(AuthGuard('jwt'), RolesGuard)
   @Post('create-category')
   @ApiOperation({ summary: 'Cria uma nova categoria no banco de dados.' })
   @ApiResponse({ status: 201, description: 'Recurso criado com sucesso' })
@@ -39,6 +39,7 @@ export class CategoriesController {
     return await this.categoriesServices.createCategory(createCategoryDto);
   }
 
+  @UseGuards(AuthGuard('jwt'), RolesGuard)
   @Patch('update-category/:id')
   @ApiOperation({ summary: 'Atualiza uma categoria no banco de dados.' })
   @CommonApiResponses()
@@ -49,6 +50,7 @@ export class CategoriesController {
     return await this.categoriesServices.updateCategory(id, updateCategoryDto);
   }
 
+  @UseGuards(AuthGuard('jwt'), RolesGuard)
   @Delete('delete-category/:id')
   @ApiOperation({ summary: 'Apaga uma categoria existente no banco de dados.' })
   @CommonApiResponses()
