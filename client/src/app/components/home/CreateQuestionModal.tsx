@@ -1,44 +1,23 @@
 "use client"
 
-import styles from "@/app/styles/Home.module.css";
-import stylesModal from "@/app/styles/Modal.module.css"
-import QuillEditor from "../box-response/QuillEditor";
-import { useRouter } from "next/navigation";
-import React, { useState, useEffect } from "react";
+import stylesModal from "@/app/styles/Modal.module.css";
 import { Dialog, DialogPanel } from "@headlessui/react";
-import { getCategories } from "@/app/utils/getCategories";
 import { Category } from "../types/categoryType";
+import { useState, useEffect } from "react";
+import { getCategories } from "@/app/utils/getCategories";
+import QuillEditor from "../box-response/QuillEditor";
 
+interface CreateQuestionModalProps {
+    onClose: () => void;
+    isOpen: boolean;
+}
 
-const ButtonsHome = () => {
+const CreateQuestionModal = ({ onClose, isOpen }: CreateQuestionModalProps) => {
     const [categories, setCategories] = useState<Category[]>([]);
     const [selectedCategory, setSelectedCategory] = useState<string>("");
-    const [isOpen, setIsOpen] = useState(false);
     const [content, setContent] = useState("");
     const [isSending, setIsSending] = useState(false);
     const [title, setTitle] = useState('');
-    const [isAuthenticated, setIsAuthenticated] = useState<boolean | null>(null);
-    const router = useRouter();
-
-    useEffect(() => {
-        const checkAuthentication = async () => {
-            const response = await fetch('/api/check-auth', {
-                method: 'GET',
-                credentials: 'include',
-            });
-
-            if (response.ok) {
-                const authenticated = await response.json()
-                console.log(authenticated.message)
-                setIsAuthenticated(authenticated.state);
-            } else {
-                console.error('Erro ao verificar login')
-            }
-        }
-        checkAuthentication();
-    }, [])
-
-
 
     useEffect(() => {
         const fetchCategories = async () => {
@@ -65,8 +44,7 @@ const ButtonsHome = () => {
             if (response.ok) {
                 const message = await response.json();
                 alert(message.message);
-                setIsOpen(false)
-                router.push('/');
+                window.location.href='/'
             } else {
                 const data = await response.json();
                 alert(`Erro ao criar pergunta: ${data.message}`);
@@ -80,10 +58,6 @@ const ButtonsHome = () => {
         }
     }
 
-    const handleNavigateQuestions = () => {
-        router.push('/questions');
-    }
-
     const handleContentChange = (value: string) => {
         const sanitizedContent = value.replace(
           /href="(www\.[^\s"]+)"/g,
@@ -93,36 +67,9 @@ const ButtonsHome = () => {
     };
 
 
-    const handleOpenModal = () => {
-        console.log(isAuthenticated)
-        if (!isAuthenticated) {
-            router.push('/auth/signin');
-        }
-
-        setIsOpen(true);
-    }
-
     return (
-        <div className={styles.area_buttons}>
-            <button
-                className={styles.bnt_options}
-                type="button"
-                onClick={handleNavigateQuestions}>
-                    <i className="fa-solid fa-globe" style={{
-                    backgroundColor: "transparent", marginRight: '5px'
-                    }}></i>Navegar em
-                    <span className={styles.text_button}>perguntas</span>
-                </button>
-                <p>ou</p>
-                <button
-                className={styles.bnt_options}
-                type="button"
-                onClick={handleOpenModal}>
-                    <i className="fa-solid fa-plus" style={{backgroundColor: "transparent"}}></i> Criar
-                    <span className={styles.text_button}>pergunta</span>
-            </button>
-
-            <Dialog open={isOpen} onClose={() => setIsOpen(false) } className={stylesModal.modal}>
+        <div>
+            <Dialog open={isOpen} onClose={ onClose } className={stylesModal.modal}>
                 <div className={stylesModal.overlay} aria-hidden="true" />
                 <DialogPanel className={stylesModal.content}>
                     <h2 className={stylesModal.title_header}>Qual sua dúvida?</h2>
@@ -176,4 +123,4 @@ const ButtonsHome = () => {
     )
 }
 
-export default ButtonsHome;
+export default CreateQuestionModal;

@@ -79,7 +79,7 @@ const InfosUser = ({ access_token } : InfosUserProps) => {
             const { sub: id, username: name, email } = userInfos;
             const updatedUserData = email === originalEmail ? { id, name } : { id, name, email };
 
-            const response = await fetch('api/update-user', {
+            const response = await fetch('api/user/update-user', {
                 method: 'PATCH',
                 headers: {
                     'Content-Type': 'application/json',

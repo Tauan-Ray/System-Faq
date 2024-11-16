@@ -1,6 +1,7 @@
 import styles from "@/app/styles/Home.module.css"
 import AllRecentQuestions from "./components/recents-questions/AllRecentQuestions";
-import ButtonsHome from "./components/buttons-home/ButtonsHome";
+import MenuHome from "./components/home/MenuHome";
+
 
 export default function Home() {
   return (
@@ -8,7 +9,7 @@ export default function Home() {
       <div className={styles.area_home}>
         <h1 className={styles.title_select}>Selecione a tarefa que deseja realizar</h1>
         <div>
-          <ButtonsHome/>
+          <MenuHome/>
         </div>
 
         <div className={styles.area_recent_questions}>
