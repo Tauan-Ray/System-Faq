@@ -130,6 +130,25 @@ export class QuestionsService {
     return questions;
   }
 
+  async searchQuestions(query: string): Promise<Question[]> {
+    if (!query) return []
+
+    return await this.prisma.questions.findMany({
+      where: {
+        question: {
+          contains: query,
+          mode: 'insensitive',
+        },
+      },
+      select: {
+        id: true,
+        question: true,
+        description: true,
+        creation_date: true,
+      }
+    })
+  }
+
   async createQuestion(
     createQuestionDto: CreateQuestionDto,
     user_id_request: number,

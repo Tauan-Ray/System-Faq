@@ -113,115 +113,24 @@ nav {
   color: #0067B8;
 }
 
-/* ================== MEDIA QUERIES =================== */
-
-/* Telas médias, como tablets (768px a 1024px) */
-@media (max-width: 1024px) {
-  header {
-    flex-direction: column;
-    align-items: center;
-  }
-
-  header > a {
-    padding-right: 0px;
-  }
-
-  .form-header {
-    width: 600px;
-    padding-bottom: 20px;
-  }
-
-  .search-bar {
-    width: 100%;
-  }
-
-  .input-search {
-    width: 100%;
-    font-size: 16px;
-  }
-
-  .button-enter {
-    width: 100px;
-    margin-left: 15px;
-  }
-
-  nav {
-    padding-right: 0;
-    margin-left: 65px;
-    margin: 0px;
-  }
-
-  .button-profile {
-    height: 40px;
-    width: 40px;
-  }
-
-  .fa-user {
-    font-size: 24px;
-  }
+.suggestions-list {
+  list-style: none;
+  padding: 0;
+  border: 1px solid #ccc;
+  background: #fff;
+  position: absolute;
+  z-index: 10;
+  width: 31%;
+  max-height: 150px;
+  overflow-y: auto;
+  border-radius: 8px;
 }
 
-/* Telas pequenas, como smartphones (até 768px) */
-@media (max-width: 768px) {
-  header {
-    flex-direction: column;
-    padding: 20px;
-  }
+.suggestions-list li {
+  padding: 8px 12px;
+  cursor: pointer;
+}
 
-  header > a {
-    padding-left: 0;
-    padding: 10px;
-    margin-right: 0px;
-  }
-
-  .form-header {
-    width: 100%;
-    padding: 20px 0;
-    margin-left: 0px;
-  }
-
-  .search-bar {
-    width: 100%;
-    margin-bottom: 15px;
-  }
-
-  .input-search {
-    width: calc(100% - 50px);
-    height: 35px;
-    font-size: 16px;
-  }
-
-  .button-search {
-    width: 50px;
-    height: 35px;
-    padding-bottom: 4px;
-  }
-
-  .fa-magnifying-glass {
-    font-size: 24px;
-    height: 15px;
-  }
-
-  nav {
-    flex-direction: row;
-    padding-right: 0;
-    justify-content: center;
-    width: 100%;
-    margin-top: 10px;
-  }
-
-  .button-enter {
-    width: 90px;
-    margin-left: 10px;
-  }
-
-  .button-profile {
-    height: 40px;
-    width: 40px;
-    margin-top: 8px;
-  }
-
-  .fa-user {
-    font-size: 24px;
-  }
+.suggestions-list li:hover {
+  background-color: #f0f0f0;
 }

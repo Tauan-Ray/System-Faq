@@ -51,6 +51,14 @@ export class QuestionsController {
     }
   }
 
+  @Get('suggestions')
+  @ApiOperation({ summary: 'Rota para buscar perguntas baseado no seu título' })
+  @CommonApiResponses()
+
+  async searchQuestions(@Query('q') query: string) {
+    return await this.questionsServices.searchQuestions(query);
+  }
+
 
   @Post('create-question')
   @UseGuards(AuthGuard('jwt'))

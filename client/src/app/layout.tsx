@@ -6,6 +6,7 @@ import Script from "next/script";
 import HeaderSite from "./components/HeaderSite";
 import Link from "next/link";
 import { cookies } from "next/headers";
+import FormSearchQuestion from "./components/FormSearchQuestion";
 
 export const metadata: Metadata = {
   title: "Create Next App",
@@ -39,12 +40,7 @@ export default function RootLayout({
             />
           </Link>
 
-          <form action="" className="form-header">
-            <div className="search-bar">
-              <input type="text" className="input-search" placeholder="Pesquise sua dúvida"/>
-              <button type="submit" className="button-search"><i className="fa-solid fa-magnifying-glass"></i></button>
-            </div>
-          </form>
+          <FormSearchQuestion/>
 
           <HeaderSite
             access_token={access_token}
