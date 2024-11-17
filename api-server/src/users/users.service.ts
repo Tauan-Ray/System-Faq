@@ -68,7 +68,11 @@ export class UsersService {
           HttpStatus.BAD_REQUEST,
         );
       }
+
+      checkPermission(id, existingUser.id);
     }
+
+
 
     return await this.prisma.users.update({
       where: { id },
@@ -86,6 +90,8 @@ export class UsersService {
     const existingUser = await this.prisma.users.findUnique({
       where: { id },
     });
+
+    checkPermission(id, existingUser.id);
 
     const isPasswordValid = await bcrypt.compare(currentPassword, existingUser.password)
 
@@ -118,7 +124,7 @@ export class UsersService {
       throwNotFoundError('Usuário');
     }
 
-    checkPermission(user_id_request, existingUser);
+    checkPermission(user_id_request, existingUser.id);
 
     await this.prisma.users.delete({
       where: { id },

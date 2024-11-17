@@ -100,6 +100,7 @@ export class QuestionsService {
         question: true,
         description: true,
         creation_date: true,
+        category_id: true,
         users: {
           select: {
             name: true,
@@ -121,6 +122,7 @@ export class QuestionsService {
         description: question.description,
         creation_date: question.creation_date,
         category: question.categories.category,
+        category_id: question.category_id,
         name: question.users.name,
       }));
     });
@@ -162,6 +164,7 @@ export class QuestionsService {
     updateQuestionDto: UpdateQuestionDto,
     user_id_request: number,
   ): Promise<Question> {
+
     try {
       const existingQuestion = await this.prisma.questions.findUnique({
         where: { id },
@@ -170,7 +173,7 @@ export class QuestionsService {
         throwNotFoundError('Pergunta');
       }
 
-      checkPermission(user_id_request, existingQuestion);
+      checkPermission(user_id_request, existingQuestion.user_id);
 
       const updateQuestion = await this.prisma.questions.update({
         where: { id },
@@ -214,7 +217,10 @@ export class QuestionsService {
       }
 
       if (existingQuestion.user_id !== user_id_request) {
-        checkPermission(user_id_request, existingQuestion);
+        throw new HttpException(
+          'Você não tem permissão deletar essa pergunta.',
+          HttpStatus.UNAUTHORIZED,
+        );
       }
 
       await this.prisma.questions.delete({

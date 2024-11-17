@@ -85,7 +85,7 @@ export class AnswersService {
         throwNotFoundError('Resposta');
       }
 
-      checkPermission(user_id_request, existingResponse);
+      checkPermission(user_id_request, existingResponse.user_id);
 
       const updateResponse = await this.prisma.answers.update({
         where: { id },
@@ -126,7 +126,7 @@ export class AnswersService {
       throwNotFoundError('Resposta');
     }
 
-    checkPermission(user_id_request, existingResponse);
+    checkPermission(user_id_request, existingResponse.user_id);
 
     await this.prisma.answers.delete({
       where: { id },

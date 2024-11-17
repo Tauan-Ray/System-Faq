@@ -47,6 +47,7 @@ const AllQuestionsUser = ({ access_token }: InfosUserProps) => {
                 headers: {
                     'Accept': 'application/json'
                 },
+                next: { revalidate: 10 }
             });
 
             if (response.ok) {

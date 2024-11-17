@@ -1,6 +1,8 @@
 import styles from "@/app/styles/QuestionProfile.module.css"
 import { infosQuestions } from "../../types/infosQuestionsTypes";
 import { useRouter } from "next/navigation";
+import { useState } from "react";
+import EditQuestion from "./EditQuestion";
 
 const OnequestionUser = ({
     id,
@@ -9,12 +11,18 @@ const OnequestionUser = ({
     category,
     description,
     creation_date,
+    category_id,
     onDeleteSuccess
 }: infosQuestions & { onDeleteSuccess: (id: number) => void }) => {
     const router = useRouter();
+    const [editQuestion, setEditQuestion] = useState(false);
 
     const handleEnterQuestion = () => {
         router.push(`/questions/${id}`)
+    }
+
+    const handleEditQuestion = () => {
+        setEditQuestion(!editQuestion)
     }
 
     const handleDeleteQuestion = async () => {
@@ -59,10 +67,20 @@ const OnequestionUser = ({
                     <p className={styles.description_question} dangerouslySetInnerHTML={{ __html: description }} />
                     <div className={styles.area_buttons}>
                         <button onClick={handleEnterQuestion} className={styles.button_view_questions} type="button">Ver</button>
-                        <button className={styles.button_update_questions} type="button">Editar</button>
+                        <button onClick={handleEditQuestion} className={styles.button_update_questions} type="button">Editar</button>
                         <button onClick={handleDeleteQuestion} className={styles.button_delete_questions} type="button">Deletar</button>
                     </div>
                 </div>
+
+            { editQuestion ?
+                <EditQuestion
+                    isOpen={editQuestion}
+                    onClose={() => setEditQuestion(false)}
+                    id={id}
+                    question={question}
+                    description={description}
+                    category_id={category_id}
+                /> : null}
             </div>
         </div>
     )
