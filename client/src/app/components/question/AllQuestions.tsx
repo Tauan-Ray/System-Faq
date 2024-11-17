@@ -1,5 +1,6 @@
 "use client"
 
+import styles from "@/app/styles/Question.module.css"
 import { useEffect, useState } from "react";
 import OneQuestion from "./OneQuestion";
 import { infosQuestions } from "../types/infosQuestionsTypes";
@@ -7,6 +8,7 @@ import { infosQuestions } from "../types/infosQuestionsTypes";
 const AllQuestions = ({ selectedCategory }: { selectedCategory: number }) => {
     const [infosQuestion, setInfosQuestion] = useState<infosQuestions[] | null>([]);
     const [errorMessage, setErrorMessage] = useState('');
+    const [quantityQuestions, setQuantityQuestions] = useState(10);
 
     const getInfosQuestion = async () => {
         try {
@@ -34,14 +36,14 @@ const AllQuestions = ({ selectedCategory }: { selectedCategory: number }) => {
 
     useEffect(() => {
         getInfosQuestion();
-    },[]);
+    });
 
     const filteredQuestions = selectedCategory === 0
-        ? infosQuestion
+        ? infosQuestion?.slice(0, quantityQuestions)
         : infosQuestion?.filter(question => question.category_id === selectedCategory)
 
     return (
-        <div>
+        <div className={styles.container}>
             {errorMessage ? (
                 <p>{errorMessage}</p>
             ) : (
@@ -56,6 +58,17 @@ const AllQuestions = ({ selectedCategory }: { selectedCategory: number }) => {
                 ) : (
                     <p>Carregando perguntas...</p>
                 )
+            )}
+
+            {infosQuestion && infosQuestion.length > quantityQuestions ? (
+                <button
+                type="button"
+                className={styles.bnt_more_questions}
+                onClick={() => setQuantityQuestions((prev) => prev + 10)}>
+                    Carregar mais perguntas
+                </button>
+            ): (
+                <p className={styles.text_end_questions}>Você chegou ao fim das perguntas</p>
             )}
         </div>
     )

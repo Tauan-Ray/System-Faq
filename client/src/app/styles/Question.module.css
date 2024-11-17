@@ -103,3 +103,31 @@
     margin-left: auto;
     cursor: pointer;
 }
+
+.container {
+    display: flex;
+    flex-direction: column;
+}
+
+.bnt_more_questions {
+    background-color: #53ADDA;
+    width: 250px;
+    height: 50px;
+    color: #FFFFFF;
+    border-radius: 8px;
+    border: none;
+    font-size: 15px;
+    font-family: 'Poppins', sans-serif;
+    font-weight: bold;
+    margin: 20px auto;
+    cursor: pointer;
+}
+
+.text_end_questions {
+    margin: 20px 0;
+    text-align: center;
+    color: #333333;
+    font-size: 18px;
+    font-family: 'JetBrains Mono', monospace;
+    font-weight: bold;
+}
