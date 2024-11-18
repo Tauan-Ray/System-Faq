@@ -3,6 +3,7 @@ export async function getCategories() {
         const response = await fetch('http://localhost:3000/categories', {
             method: 'GET',
             headers: { 'Accept': 'application/json' },
+            next: { revalidate: 3 }
         });
 
         if (response.ok) {

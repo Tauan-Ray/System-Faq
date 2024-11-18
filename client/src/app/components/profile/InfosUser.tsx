@@ -4,6 +4,7 @@ import styles from "@/app/styles/Profile.module.css"
 import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation"
 import { UserInfo } from "../types/userInfoTypes";
+import ButtonAreaCategory from "../categories/ButtonAreaCategory";
 
 interface InfosUserProps {
     access_token: string;
@@ -146,6 +147,11 @@ const InfosUser = ({ access_token } : InfosUserProps) => {
                             <p style={{color: 'red', marginLeft: '1px', marginTop: '8px'}} key={index}>{error}</p>
                         ))}
                     </div>
+
+                    {userInfos &&
+                    userInfos.role === "ADMIN" &&
+                    <ButtonAreaCategory/>
+                    }
 
                     {isEditing ? (
                         <div style={{width: '99%' ,display: "flex", alignItems: "end", gap: "15px"}}>

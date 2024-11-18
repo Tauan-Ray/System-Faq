@@ -1,0 +1,90 @@
+.area_all_categories {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.list_categories {
+    list-style: none;
+    width: auto;
+    border-radius: 8px;
+    padding: 20px;
+    /* border: 1px solid #333333; */
+}
+
+.list_categories li {
+    display: flex;
+    font-size: 22px;
+    font-family: 'Roboto', sans-serif;
+    padding: 8px 12px;
+    cursor: pointer;
+    margin-bottom: 25px;
+    flex: 1;
+}
+
+.area_button {
+    display: flex;
+    justify-content: flex-start;
+    gap: 8px;
+    margin-bottom: 25px;
+}
+
+
+.list_categories li:hover {
+    background-color: #f0f0f0;
+}
+
+.area_create_category {
+    margin-top: 25px;
+    display: flex;
+    justify-content: center;
+}
+
+.button_create_category {
+    background-color: #6ab9e4;
+    width: 150px;
+    height: 40px;
+    color: #FFFFFF;
+    border-radius: 8px;
+    border: none;
+    font-size: 15px;
+    font-family: 'Poppins', sans-serif;
+    font-weight: 500;
+    cursor: pointer;
+    transition: background-color 300ms;
+}
+
+.button_create_category:hover {
+    background-color: #15576e;
+}
+
+.button_delete_category,
+.button_update_category {
+    margin-right: 16px;
+    width: 100px;
+    height: 35px;
+    color: #FFFFFF;
+    border-radius: 8px;
+    border: none;
+    font-size: 15px;
+    font-family: 'Poppins', sans-serif;
+    font-weight: 500;
+    cursor: pointer;
+    transition: background-color 300ms;
+}
+
+.button_update_category {
+    background-color: #2A7FAE;
+}
+
+.button_update_category:hover {
+    background-color: #3D94C2;
+}
+
+.button_delete_category {
+    background-color: #1A4F63;
+}
+
+.button_delete_category:hover  {
+    background-color: #276A82;
+}

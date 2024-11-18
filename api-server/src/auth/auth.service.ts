@@ -12,8 +12,8 @@ export class AuthService {
     private readonly jwtService: JwtService,
   ) {}
 
-  async login(user, user_id: number, username: string) {
-    const payload = { sub: user_id, email: user.email, username: username };
+  async login(user, user_id: number, username: string, role: string) {
+    const payload = { sub: user_id, email: user.email, username: username, role: role };
     const accessToken = this.jwtService.sign(payload);
 
     const refreshToken = this.jwtService.sign(payload, {
@@ -53,6 +53,7 @@ export class AuthService {
         email: payload.email,
         sub: payload.sub,
         username: payload.username,
+        role: payload.role,
       });
       return {
         access_token: newAccessToken,

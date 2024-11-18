@@ -36,7 +36,7 @@ model questions {
   user_id       Int
   category_id   Int
   users         users      @relation(fields: [user_id], references: [id])
-  categories    categories @relation(fields: [category_id], references: [id])
+  categories    categories @relation(fields: [category_id], references: [id], onDelete: Cascade)
   answers       answers[]
 }
 

@@ -108,12 +108,12 @@
 
 
 .editable {
-    background-color: #f0f8ff; /* cor de fundo mais clara para destacar */
-    border: 1px solid #007bff; /* borda azul */
+    background-color: #f0f8ff;
+    border: 1px solid #007bff;
 }
 
 .button_save {
-    background-color: #66A0CB; /* botão verde para salvar */
+    background-color: #66A0CB;
     width: 150px;
     height: 38px;
     border: none;
@@ -134,7 +134,7 @@
 }
 
 .button_cancel {
-    background-color: #3C5185; /* botão verde para salvar */
+    background-color: #3C5185;
     width: 150px;
     height: 38px;
     border: none;
@@ -160,4 +160,25 @@
     font-size: 36px;
     font-weight: 500;
     font-family: "JetBrains Mono", monospace;
+}
+
+.button_create_category {
+    background-color: #2e4379;
+    width: 150px;
+    height: 38px;
+    border: none;
+    border-radius: 8px;
+    color: #FFFFFF;
+    font-family: 'Poppins', sans-serif;
+    font-weight: bold;
+    text-align: center;
+    position: relative;
+    top: 23px;
+    transition: background-color 500ms;
+    cursor: pointer;
+}
+
+
+.button_create_category:hover {
+    background-color: #738bca
 }

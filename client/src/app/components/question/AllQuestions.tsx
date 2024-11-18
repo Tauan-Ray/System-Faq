@@ -36,7 +36,7 @@ const AllQuestions = ({ selectedCategory }: { selectedCategory: number }) => {
 
     useEffect(() => {
         getInfosQuestion();
-    });
+    }, []);
 
     const filteredQuestions = selectedCategory === 0
         ? infosQuestion?.slice(0, quantityQuestions)
