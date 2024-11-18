@@ -1,10 +1,25 @@
 import styles from "@/app/styles/Profile.module.css"
 import { cookies } from "next/headers";
 import MenuCategories from "../components/categories/MenuCategories";
+import jwt, { JwtPayload } from "jsonwebtoken";
+
+interface DecodedToken extends JwtPayload {
+    username?: string;
+}
 
 const CategoriesPage = () => {
     const cookiesList = cookies();
     const access_token = cookiesList.get('access_token')?.value || '';
+
+
+    let username = "Usuário";
+    if (access_token) {
+        const decodedToken = jwt.decode(access_token) as DecodedToken;
+
+        if (decodedToken.username) {
+            username = decodedToken.username;
+        }
+    }
 
     return (
         <div>
@@ -16,7 +31,7 @@ const CategoriesPage = () => {
                             padding: "15px",
                             marginLeft: "10px"
                         }}></i>
-                        <p>Tauan</p>
+                        <p>{username}</p>
                     </div> {/* header_user */}
 
                     <div style={{

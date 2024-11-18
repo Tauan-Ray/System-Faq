@@ -79,7 +79,7 @@ const OnequestionUser = ({
                     id={id}
                     question={question}
                     description={description}
-                    category_id={category_id}
+                    category_id={category_id || 0}
                 /> : null}
             </div>
         </div>

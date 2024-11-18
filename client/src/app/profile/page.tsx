@@ -2,10 +2,24 @@ import styles from "@/app/styles/Profile.module.css"
 import InfosUser from "../components/profile/InfosUser";
 import { cookies } from "next/headers";
 import AllQuestionsUser from "../components/profile/questions-user/AllQuestionsUser";
+import jwt, { JwtPayload } from "jsonwebtoken";
+
+interface DecodedToken extends JwtPayload {
+    username?: string;
+}
 
 const ProfilePage = () => {
     const cookiesList = cookies();
     const access_token = cookiesList.get('access_token')?.value || '';
+
+    let username = "Usuário";
+    if (access_token) {
+        const decodedToken = jwt.decode(access_token) as DecodedToken;
+
+        if (decodedToken.username) {
+            username = decodedToken.username;
+        }
+    }
 
 
     return (
@@ -18,7 +32,7 @@ const ProfilePage = () => {
                             padding: "15px",
                             marginLeft: "10px"
                         }}></i>
-                        <p>Tauan</p>
+                        <p>{username}</p>
                     </div> {/* header_user */}
 
                     <div style={{
